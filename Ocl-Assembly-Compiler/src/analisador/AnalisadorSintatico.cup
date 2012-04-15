@@ -1,0 +1,194 @@
+import java_cup.runtime.*;
+
+parser code {: 
+     public void report_error(String message, Object info) {
+   
+        StringBuffer m = new StringBuffer("Error");
+   
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {
+                /* Add to the end of the StringBuffer error message
+                   the line number of the error in the input. */
+                m.append(" in line "+(s.left+1));   
+                /* Check if the column number in the input is greater
+                   or equal to zero. */
+                if (s.right >= 0)                    
+                    /* Add to the end of the StringBuffer error message
+                       the column number of the error in the input. */
+                    m.append(", column "+(s.right+1));
+            }
+        }
+   
+	
+        m.append(" : "+message);
+        System.err.println(m);
+    }
+
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        throw new RuntimeException(message);
+        //System.exit(1);
+    }
+   
+:};
+
+terminal			RPAREN, LPAREN, RBRACKET, LBRACKET;
+terminal			XOR, OR, AND, NOT;
+terminal			EQ, GT, LT, GE, LE, NE;
+terminal			PLUS, MINUS;
+terminal			TIMES, DIV;
+terminal			COLLECTION;
+terminal			INV;
+terminal			IF, THEN, ELSE, ENDIF;
+terminal			COLON, CONTEXT, COMMA, IMPLIES, DOT, ARROW, PIPE;
+terminal String		NAME, SELF, STRING; 
+terminal String		INTEGER, DOUBLE, TRUE, FALSE;
+
+non terminal oclExpressions, constraint, invariantes, optName,
+			 contextDeclaration, classifierContext, stereotype, oclExpression,
+			 expression, ifExpression, logicalExpression, manyLogicalExpression,
+			 relationalExpression, optRelationalExpression, additiveExpression,
+			 optAdditiveExpression, multiplicativeExpression, manyMultiplicativeExpression,
+			 unaryExpression, postfixExpression, manySelfPostfixExpression, manyPostfixExpression,
+			 primaryExpression, propertyCallParameters, propertyCallCol,
+			 propertyCallParametersCol, literal, number, simpleTypeSpecifier,
+			 literalCollection, collectionItens, propertyCall, optPropertyCall,
+			 declarator, manyDeclarator, pathName, actualParameterList, manyActualParameterList,
+			 logicalOperator, collectionKind, relationalOperator, addOperator, multiplyOperator,
+			 unaryOperator, boolean, declaratorAux;
+
+precedence left COMMA;
+precedence left IMPLIES;
+precedence left NOT;
+precedence left AND, OR, XOR;
+precedence left EQ, NE;
+precedence left LT, GT, GE, LE;
+precedence left IF, THEN, ELSE, ENDIF;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence left ARROW, DOT;
+
+start with oclExpressions;
+
+oclExpressions						::= constraint oclExpressions
+									| ;
+
+constraint							::= contextDeclaration invariantes;
+
+invariantes							::= stereotype optName COLON oclExpression invariantes
+									| stereotype optName COLON oclExpression;
+
+optName								::= NAME
+									| ;
+
+contextDeclaration					::= CONTEXT classifierContext;
+
+classifierContext					::= NAME COLON NAME 
+									| NAME;
+
+stereotype							::= INV;
+
+oclExpression						::= expression;
+
+expression							::= logicalExpression;
+
+ifExpression						::= IF expression THEN expression ELSE expression ENDIF;
+
+logicalExpression					::= relationalExpression manyLogicalExpression;
+
+manyLogicalExpression				::= logicalOperator relationalExpression manyLogicalExpression
+									| ;
+
+relationalExpression				::= additiveExpression optRelationalExpression;
+
+optRelationalExpression				::= relationalOperator additiveExpression
+									| ;
+
+additiveExpression					::= multiplicativeExpression optAdditiveExpression;
+
+optAdditiveExpression				::= addOperator multiplicativeExpression optAdditiveExpression
+									| ;
+
+multiplicativeExpression			::= unaryExpression manyMultiplicativeExpression;
+
+manyMultiplicativeExpression		::= multiplyOperator unaryExpression manyMultiplicativeExpression
+									| ;
+
+unaryExpression						::= unaryOperator postfixExpression
+									| postfixExpression;
+
+postfixExpression					::= SELF manySelfPostfixExpression
+									| primaryExpression manyPostfixExpression;
+
+manySelfPostfixExpression			::= DOT propertyCall manyPostfixExpression
+									| ;
+
+manyPostfixExpression				::= DOT propertyCall manyPostfixExpression
+									| ARROW propertyCallCol manyPostfixExpression
+									| ;
+
+primaryExpression					::= literalCollection
+									| literal
+									| propertyCall
+									| LPAREN expression RPAREN
+									| ifExpression;
+
+propertyCallParametersCol			::= LPAREN declarator actualParameterList RPAREN
+									| LPAREN actualParameterList RPAREN
+									| LPAREN declarator RPAREN
+									| LPAREN RPAREN;
+
+propertyCallParameters				::= LPAREN actualParameterList RPAREN
+									| LPAREN RPAREN;
+						
+propertyCallCol						::= pathName propertyCallParametersCol;
+
+literal 							::= STRING
+									| number
+									| boolean;
+
+number								::= DOUBLE | INTEGER ;
+
+boolean								::= TRUE | FALSE;
+
+simpleTypeSpecifier					::= pathName;
+
+literalCollection					::= collectionKind LBRACKET collectionItens RBRACKET
+									| collectionKind LBRACKET RBRACKET;
+
+collectionItens 					::=	expression
+									| collectionItens COMMA expression;
+
+propertyCall						::= pathName optPropertyCall;
+
+optPropertyCall						::= propertyCallParameters
+									| ;
+
+declarator							::= declaratorAux PIPE;
+
+declaratorAux						::= NAME COLON simpleTypeSpecifier manyDeclarator
+									| NAME manyDeclarator;
+
+manyDeclarator						::= COMMA NAME COLON simpleTypeSpecifier manyDeclarator
+									| COMMA NAME manyDeclarator
+									| ;
+
+pathName							::= NAME;
+
+actualParameterList					::= expression manyActualParameterList;
+
+manyActualParameterList				::= COMMA expression manyActualParameterList
+									| ;
+
+logicalOperator						::= AND | OR | XOR | IMPLIES;
+
+collectionKind						::= COLLECTION;
+
+relationalOperator					::= EQ | GT | LT | GE | LE | NE;
+
+addOperator							::= PLUS | MINUS;
+
+multiplyOperator					::= TIMES | DIV;
+
+unaryOperator						::= MINUS | NOT;

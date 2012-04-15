@@ -1,0 +1,57 @@
+--	
+context Usuario inv idadeMinima:
+	u.idade() >= 18
+
+context Usuario inv nomeUsuarioNaoVazio:
+	self.nome <> ''
+
+context Usuario inv emailUnico:
+	Usuario.allInstances()->unique(email)
+
+context Usuario inv temPeloMenosUmaConta:
+	self.contas->notEmpty()
+
+context Grupo inv quantidadeDeTagsMenorQueSete:
+	self.tag->size() < 7
+
+context Grupo inv maximoOitoMediadores:
+	self.Participacao->select(p : Participacao | p = Participacao.MODERADOR)->size() < 9
+
+context Usuario inv nomeCompleto:
+	self.nomeCompleto = self.nome.concat(' ').concat(self.sobrenome)
+
+context Usuario inv familiaresContatos:
+	self.contatos->includesAll(self.dependentes)
+
+context Usuario
+inv contaValida:
+	self.contas->exists(valida = True)
+
+context Topico inv mensagensOrdenadas:
+	self.mensagem = self.mensagem->sortedBy(self.mensagem.data)
+
+context lopico:Topico inv mensagensOrdenadas:
+	l.allInstances()->forAll(b1, b2 | b1 <> b2 implies b1.title <> b2.title)
+
+context l:Library inv:
+	l.allInstances()->forAll(b1, b2 | b1 <> b2 implies b1.title <> b2.title)
+
+context Seminar inv InvSeminar :
+Instructor.allInstances->forAll(i |
+i.qualifiedFor->includesAll(i.session.course))
+and Session.allInstances->forAll(s |
+s.course.session->includes(s))
+and Course.allInstances->forAll(c |
+c.session->forAll(s | s.course = c))
+-------------------------------
+-- [1] A DataValue originates from exactly one Classifier, which is a DataType.
+
+-- 	
+
+context DataValue
+
+inv DataValue_WFR_1:
+-- [1] A DataValue originates from exactly one Classifier, which is a DataType.
+
+(self.classifier->size() = 1) and self.classifier->forAll(oclIsKindOf(DataType))
+-------------------------------

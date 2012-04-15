@@ -1,0 +1,68 @@
+<project name="Ocl-Assembly-Compiler" basedir="." default="jar">
+		<path id="classpath">
+        	<fileset dir="lib" includes="**/*.jar"/>
+		</path>
+
+        <target name="limpa" description="limpas os diretorios de saida e apaga o jar gerado anteriormente">
+                <echo>Limpando projeto</echo>
+                <delete dir="bin"/>
+                <delete dir="src/codigoGerado"/>
+                <delete file="OclAssemblyCompiler.jar"/>
+        </target>
+        
+        <target name="init" depends="limpa" description="cria os diretorios.">
+                <echo>Criando diretorios</echo>
+                <mkdir dir="bin"/>
+                <mkdir dir="bin/classes"/>
+                <mkdir dir="bin/parsersClasses"/>
+                <mkdir dir="src/codigoGerado"/>
+        </target>
+
+		<target name="compilaGerador" depends="init">
+	        <javac srcdir="src/gerador" destdir="bin/classes" classpathref="classpath" />
+	    </target>
+        
+		<target name="geraAnalisadores" depends="compilaGerador">
+       		<java classname="gerador.Gerador">
+            	<classpath>
+            		<path refid="classpath"/>
+                	<path id="application" location="bin/classes"/>
+            	</classpath>
+      		</java>
+		</target>
+
+        <target name="compila" depends="geraAnalisadores" description="compila os analisadores">
+                <echo>Compilando os analisadores...</echo>
+                <javac srcdir="src/codigoGerado" destdir="bin/parsersClasses" classpathref="classpath"/>
+        </target>
+        
+        <target name="compilaMain" depends="compila" description="compila o Main java.">
+                <echo>Compilando o Main...</echo>
+                <javac srcdir="src/main" destdir="bin/parsersclasses" classpathref="classpath"/>
+        </target>
+
+        <target name="jar" depends="compilaMain">
+                <echo>Gerando Jar...</echo>
+                <jar destfile="OclAssemblyCompiler.jar">
+                		<fileset dir="bin/parsersClasses">
+                                <include name="*/**" />
+                        </fileset>
+                        <manifest>
+                                <attribute name="Main-Class" value="main.Main" />
+                        </manifest>
+                        <zipfileset src="lib/JFlex.jar" includes="**/*.class"/>
+           				<zipfileset src="lib/java-cup-11a.jar" includes="**/*.class"/>
+            			<zipfileset src="lib/junit-4.8.1.jar" includes="**/*.class"/>
+                </jar>
+        </target>
+        
+        <target name="run" depends="jar">
+        <input message="Informe o arquivo que voce deseja analisar:" addproperty="file" defaultvalue=""/>
+        <java classname="main.Main">
+            <classpath>
+                <path id="application" location="OclAssemblyCompiler.jar"/>
+            </classpath>
+            <arg value="${file}"/>
+        </java>
+    </target>
+</project>
