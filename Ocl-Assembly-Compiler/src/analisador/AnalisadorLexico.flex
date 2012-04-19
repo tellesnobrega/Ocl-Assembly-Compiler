@@ -11,37 +11,28 @@ import java_cup.runtime.*;
 %cup
 
 %{
-	private Symbol symbol(int type) {
-		return new Symbol(type, yyline, yycolumn);
-	}
-   	
 	private Symbol symbol(int type, Object val) {
 		return new Symbol(type, yyline, yycolumn, val);
 	}
 
+	private Symbol symbol(int type) {
+		return new Symbol(type, yyline, yycolumn);
+	}
+   	
 	private void mensagemErro() {
-		throw new RuntimeException("Erro Léxico na linha " + yyline + " e coluna " + yycolumn + " . Não existe padrão para o lexema: " + yytext());
+		throw new RuntimeException("Ocorreu de erro léxico na linha " + yyline + " e coluna " + yycolumn + " . Lexema não casou com padrão: " + yytext());
 	}
 %}
 
-numero = [0-9]+
-letra = [a-zA-Z]
-inteiro = [+-]?{numero}
+number = [0-9]+
+letter = [a-zA-Z]
+integer = [+-]?{number}
 
 %%
 
 "/*"([ -~] | [^\n\r] | [\t\f\n\r])*"*/"	{ 											}
 "--"([ -~])*							{ 											}
 "--"([^\n\r])*([-~])*[\n\r]				{ 											}
-"(" 									{ return symbol(sym.LPAREN); 				}
-")"			 							{ return symbol(sym.RPAREN); 				}
-"{"			 							{ return symbol(sym.LBRACKET); 				}
-"}"			 							{ return symbol(sym.RBRACKET); 				}
-"xor" 									{ return symbol(sym.XOR); 					}
-"or"		 							{ return symbol(sym.OR); 					}
-"and"		 							{ return symbol(sym.AND); 					}
-"implies"								{ return symbol(sym.IMPLIES); 				}
-"not"		 							{ return symbol(sym.NOT); 					}
 "="			 							{ return symbol(sym.EQ); 					}
 ">"			 							{ return symbol(sym.GT);					}
 "<"			 							{ return symbol(sym.LT); 					}
@@ -51,9 +42,12 @@ inteiro = [+-]?{numero}
 "+"			 							{ return symbol(sym.PLUS); 					}
 "-" 									{ return symbol(sym.MINUS); 				}
 "*" 									{ return symbol(sym.TIMES); 				}
+"(" 									{ return symbol(sym.LPAREN); 				}
+")"			 							{ return symbol(sym.RPAREN); 				}
+"{"			 							{ return symbol(sym.LBRACKET); 				}
+"}"			 							{ return symbol(sym.RBRACKET); 				}
 "/"			 							{ return symbol(sym.DIV); 					}
 "collection"		 					{ return symbol(sym.COLLECTION);			} 
-"inv"		 							{ return symbol(sym.INV); 					}
 "if"		 							{ return symbol(sym.IF); 					}
 "then"		 							{ return symbol(sym.THEN); 					}
 "else"		 							{ return symbol(sym.ELSE);					}
@@ -63,13 +57,18 @@ inteiro = [+-]?{numero}
 ","			 							{ return symbol(sym.COMMA); 				}
 "|"			 							{ return symbol(sym.PIPE); 					}
 "->"		 							{ return symbol(sym.ARROW); 				}
+"xor" 									{ return symbol(sym.XOR); 					}
+"or"		 							{ return symbol(sym.OR); 					}
+"and"		 							{ return symbol(sym.AND); 					}
+"implies"								{ return symbol(sym.IMPLIES); 				}
+"not"		 							{ return symbol(sym.NOT); 					}
 "context" 								{ return symbol(sym.CONTEXT);				}
 "True"              					{ return symbol(sym.TRUE);                  }
 "False"			             			{ return symbol(sym.FALSE);                	}
 "self"									{ return symbol(sym.SELF);					}
-{inteiro}								{ return symbol(sym.INTEGER, yytext());		}
-{inteiro}\.{numero}([eE][+-]?{numero})?	{ return symbol(sym.DOUBLE, yytext());		}
-({letra} | _)({letra} | {numero} | _)*	{ return symbol(sym.NAME, yytext()); 		}
+{integer}								{ return symbol(sym.INTEGER, yytext());		}
+{integer}\.{number}([eE][+-]?{number})?	{ return symbol(sym.DOUBLE, yytext());		}
+({letter} | _)({letter} | {number} | _)*	{ return symbol(sym.NAME, yytext()); 		}
 "'"([ -&(-~]  | \\')*"'"            	{ return symbol(sym.STRING, yytext());		}
 [ \r\n\t\f] 							{ 											}
 <<EOF>> 								{ return symbol(sym.EOF); 					}
