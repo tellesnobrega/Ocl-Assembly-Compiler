@@ -1,0 +1,94 @@
+context ProgramaFidelidade::cadastrar(c : Cliente, d: Cliente) : void
+post: 1 + 1
+
+
+context Conta::estaVazia() : Boolean
+pre: 9 > 2
+pre: 1 * 2 = 2
+post: ( 10 = 10)
+
+context ProgramaFidelidade::cadastrar(c : Cliente) : void
+pre parametroOk: not cliente->size() > 2
+post resultadoOk: cliente = cliente@pre->including(c)
+
+context ProgramaFidelidade::cadastrar(c : Cliente) : void
+post: self.transacoes->select( pontos > 100 )
+
+context Conta::estaVazia() : Boolean
+post: cards->select( valid = true )
+
+context Conta::estaVazia() : Boolean
+post: self.partners->select(deliveredServices->forAll(pointsEarned=0))
+
+
+context Conta::estaVazia() : Boolean
+pre arroba: not cliente->includes(c)
+post carpano: cliente = cliente@pre->including(c)
+post: self.cliente->exists( idade() <= 70)
+
+context Conta::estaVazia() : Boolean
+post: transactions->exists(t | t.points > 0)
+
+context aa::auuhhhh(): type
+pre: self.cliente->forAll( c, cd | c <> cd implies c.rg <> cd.rg)
+
+context aa::auuhhhh(): type
+pre: Classe::t->exists(c)
+
+context aa::auuhhhh(): type
+pre: cartoes->select(transacoes.pontos->select() > 10000)
+
+context aa::getServicosPorNivel(nomeNivel : String) : Set
+pre: nivelServico->select(nome = nomeNivel).servicosDisponiveis->select()
+
+context aa::getServicosPorNivel(nomeNivel : String) : Set
+pre: self.nivelServico->select().name = 'OURO' implies self.nivelServico.cara->select().cor = TipoDeCor::ouro
+
+context aa::getServicosPorNivel(nomeNivel : String) : Set
+pre: a::b()
+
+context aa::getServicosPorNivel(nomeNivel : String) : Set
+pre: parceiros.servicosOferecidos->forAll(pontosACreditar = 0) and carpano.socio.cartao->forAll(valido) and cliente->forAll(idade() > 18)
+
+
+context aa::getServicosPorNivel(nomeNivel : String) : Set
+pre: if self.isUnemployed then parceiros.servicosOferecidos->forAll(pontosACreditar = 0) and socio.cartao->forAll(valido) and cliente->forAll(idade() > 18) else income >= 100 endif
+
+
+context Sistema::escolherBebida(idBebida:Integer)
+      pre carpano: bebidaDisponivel(idBebida) and
+           trocoSuficiente(obterBebida(idBebida).preco)
+      post:maquinaDeBebida@pre.historicoDeVenda->size()=0 implies
+           maquinaDeBebida.historicoDeVenda->size()=1 
+      post:maquinaDeBebida.historicoDeVenda.oclIsNew() implies
+           maquinaDeBebida.historicoDeVenda.dataInicial=obterDataAtual()
+      post:if maquinaDeBebida.historicoDeVenda.oclIsNew() then
+              maquinaDeBebida.historicoDeVenda.venda->size()=1
+           else
+              maquinaDeBebida.historicoDeVenda.venda->size()=
+              maquinaDeBebida.historicoDeVenda@pre.venda->size()+1
+           endif
+      post: vendaAtual (maquinaDeBebida.historicoDeVenda).bebida=obterBebida(idBebida)
+      post:obterItem(maquinaDeBebida.estoqueDeBebida,obterBebida(idBebida)).quantidade=obterItem.maquinaDeBebida.estoqueDeBebida@pre.obterBebida(idBebida).quantidade-1
+
+context Person::income(d: Date)
+	post: if d > '01/01/2001' then result = 3000 else result = 2000 endif
+
+context Sistema::fornecerDinheiro(dinheiro:Moeda)
+     pre:dinheiro.valor=1.0
+     post:maquinaDeBebida.carteiraDoCliente@pre->size=0 implies
+                  maquinaDeBebida.carteiraDoCliente->size=1 and
+                  maquinaDeBebida.carteiraDoCliente.oclIsNew=true
+     post:maquinaDeBebida.carteiraDoCliente.oclIsNew=true implies
+     maquinaDeBebida.carteiraDoCliente.itemDeRepositorioDeDinheiro->	select()=1 
+      post:if    itemMaisRecente(maquinaDeBebida.carteiraDoCliente).oclIsNew() then
+itemMaisRecente(maquinaDeBebida.carteiraDoCliente).moeda=dinheiro and
+itemMaisRecente(maquinaDeBebida.carteiraDoCliente).quantidade=1
+           else
+itemMaisRecente(maquinaDeBebida.carteiraDoCliente).quantidade=
+itemMaisRecente(maquinaDeBebida.carteiraDoCliente@pre).quantidade+1 endif
+
+
+
+
+

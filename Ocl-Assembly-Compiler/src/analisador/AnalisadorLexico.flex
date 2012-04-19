@@ -48,10 +48,13 @@ integer = [+-]?{number}
 "}"			 							{ return symbol(sym.RBRACKET); 				}
 "/"			 							{ return symbol(sym.DIV); 					}
 "collection"		 					{ return symbol(sym.COLLECTION);			} 
+"pre" 				{ return symbol(sym.PRE);					}
+"post" 				{ return symbol(sym.POST); 					}
 "if"		 							{ return symbol(sym.IF); 					}
 "then"		 							{ return symbol(sym.THEN); 					}
 "else"		 							{ return symbol(sym.ELSE);					}
 "endif"			 						{ return symbol(sym.ENDIF); 				}
+"::" 									{ return symbol(sym.DOUBLECOLON); 				}
 ":"						    			{ return symbol(sym.COLON); 				}
 "."			 							{ return symbol(sym.DOT);					}
 ","			 							{ return symbol(sym.COMMA); 				}
@@ -65,9 +68,9 @@ integer = [+-]?{number}
 "context" 								{ return symbol(sym.CONTEXT);				}
 "True"              					{ return symbol(sym.TRUE);                  }
 "False"			             			{ return symbol(sym.FALSE);                	}
-"self"									{ return symbol(sym.SELF);					}
-{integer}								{ return symbol(sym.INTEGER, yytext());		}
-{integer}\.{number}([eE][+-]?{number})?	{ return symbol(sym.DOUBLE, yytext());		}
+"@" 									{ return symbol(sym.AT);					}
+{number}		 						{ return symbol(sym.NUMBER, Integer.parseInt(yytext())); 	}
+{integer}\.{number}([eE][+-]?{number})?	{ return symbol(sym.DOUBLE, yytext());		}			
 ({letter} | _)({letter} | {number} | _)*	{ return symbol(sym.NAME, yytext()); 		}
 "'"([ -&(-~]  | \\')*"'"            	{ return symbol(sym.STRING, yytext());		}
 [ \r\n\t\f] 							{ 											}
