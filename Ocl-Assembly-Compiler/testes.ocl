@@ -1,16 +1,4 @@
 --	
-context Usuario inv idadeMinima:
-	u.idade() >= 18
-
-context Usuario inv nomeUsuarioNaoVazio:
-	self.nome <> ''
-
-context Usuario inv emailUnico:
-	Usuario.allInstances()->unique(email)
-
-context Usuario inv temPeloMenosUmaConta:
-	self.contas->notEmpty()
-
 context Grupo inv quantidadeDeTagsMenorQueSete:
 	self.tag->size() < 7
 

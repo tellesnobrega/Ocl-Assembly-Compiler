@@ -15,13 +15,12 @@ public class Compilador {
 	}
 	
 	public static void executaAnalisadorSintatico(String exemplo) throws Exception {
-		System.out.println("Iniciando analisador Lexico!");
+		System.out.println("Analise Lexica");
 		AnalisadorLexico scanner = new AnalisadorLexico(new FileReader(exemplo));
-		System.out.println("Analise Lexica: DONE!");
-		System.out.println("Iniciando analisador Sintatico!");
+		System.out.println("Analise Lexica Concluida");
+		System.out.println("Analise Sintatico");
 		parser p = new parser(scanner);
 		p.parse();
-		System.out.println("Analise Sintatica: DONE!");
-		System.out.println("Analise bem sucedida, nenhum erro foi encontrado!");
+		System.out.println("Analise Sintatica Concluida");
 	}
 }
