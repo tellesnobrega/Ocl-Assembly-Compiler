@@ -1,0 +1,8 @@
+context ProgramaFidelidade inv inv_01:
+self.socio.conta.pontos > 0
+
+context ProgramaFidelidade inv inv_02:
+self.socio.socio->exists(masculino)
+
+context Conta inv inv_03:
+self.transacoes->select(pontos > 12)->forAll(self.transacoes.cartao.valido)
