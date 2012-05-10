@@ -29,6 +29,9 @@
                 	<path id="application" location="bin/classes"/>
             	</classpath>
       		</java>
+			<copy todir="src/codigoGerado">
+				 <fileset dir="src/gerador"/>
+			</copy>
 		</target>
 
         <target name="compila" depends="geraAnalisadores" description="compila os analisadores">
@@ -53,16 +56,17 @@
                         <zipfileset src="lib/JFlex.jar" includes="**/*.class"/>
            				<zipfileset src="lib/java-cup-11a.jar" includes="**/*.class"/>
             			<zipfileset src="lib/junit-4.8.1.jar" includes="**/*.class"/>
+                		<zipfileset src="lib/jdom-1.1.jar" includes="**/*.class"/>
                 </jar>
         </target>
         
         <target name="run" depends="jar">
-        <input message="Informe o arquivo que voce deseja analisar:" addproperty="file" defaultvalue=""/>
         <java classname="main.Main">
             <classpath>
                 <path id="application" location="OclAssemblyCompiler.jar"/>
             </classpath>
-            <arg value="${file}"/>
+        	<arg value="teste.txt"/>
+        	<arg value="profe_modificado.xml" />
         </java>
     </target>
 </project>
