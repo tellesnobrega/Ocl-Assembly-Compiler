@@ -78,394 +78,392 @@ precedence left DOUBLEDOT, DOUBLECOLON, COLON, DOT, ARROW;
 
 
 /* Contexto */
-oclExpressions ::= constraint oclExpressions 
-                   {: System.out.println("Ocl Expressions"); :} 
+oclExpressions ::= constraint:c oclExpressions:oclE
+                   {: RESULT = new OclExpressionClass(contraint,oclE); :} 
                    | 
                    ;
 
-constraint ::= contextDeclaration stereotype NAME COLON oclExpression stereotypeOpt 
-               {: System.out.println("Constraint"); :}               
+constraint ::= contextDeclaration:cd stereotype:s NAME:name COLON oclExpression:oclE stereotypeOpt:sOpt 
+               {: RESULT = new ConstraintClass(cd,s,name,oclE,sOpt); :}               
 	    	   | 
-               contextDeclaration stereotype COLON oclExpression stereotypeOpt 
-               {: System.out.println("Constraint"); :}  
+               contextDeclaration:cd stereotype:s COLON oclExpression:oclE stereotypeOpt:sOpt 
+               {: RESULT = new ConstraintClass(cd,s,oclE,sOpt); :}  
                ;
 
-stereotypeOpt ::= stereotype stereotypeName COLON oclExpression stereotypeOpt 
-                  {: System.out.println("Stereotype Opt"); :}
+stereotypeOpt ::= stereotype:s stereotypeName:sName COLON oclExpression:oclE stereotypeOpt:sOpt 
+                  {: RESULT = new StereotypeClass(s,sName,oclE,sOpt); :}
                   | 
                   ;
 
-stereotypeName ::= NAME 
-		   {: System.out.println("Stereotype Name"); :}
-                   | 
+stereotypeName ::= NAME:name
+				   {: RESULT = new StereotypeNameClass(name);; :}
+				   |
                    ;
 
-contextDeclaration ::= CONTEXT contextDeclarationOpt 
-                       {: System.out.println("\nComecando uma derivacao: \nContext Declaration"); :}
+contextDeclaration ::= CONTEXT contextDeclarationOpt:cdo 
+                       {: RESULT = new ContextDeclarationClass(cdo); :}
                        ;
 
-contextDeclarationOpt ::= operationContext 
-			  {: System.out.println("Context Declaration Opt"); :};  
+contextDeclarationOpt ::= operationContext:opCon
+						  {: RESULT = new ContextDeclarationOptClass(opCon); :};  
 
-operationContext ::= NAME DOUBLECOLON operationName LPAREN formalParameterList RPAREN COLON returnType 
-                     {: System.out.println("Operation Context"); :}
-		     | 
-                     NAME DOUBLECOLON operationName LPAREN formalParameterList RPAREN
-		     {: System.out.println("Operation Context"); :}
+operationContext ::= NAME:name DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN COLON returnType:rType 
+                     {: RESULT = new OperationContextClass(name,opName,formParList,rType); :}
+		     		 | 
+                     NAME:name DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN
+		     		 {: RESULT = new OperationContextClass(name,opName,formParList); :}
                      ;
 
-returnType ::= typeSpecifier
-               {: System.out.println("Return Type"); :}
+returnType ::= typeSpecifier:typeSpec
+               {: RESULT = new ReturnTypeClass(typeSpec); :}
                ;
 
-typeSpecifier ::= simpleTypeSpecifier
-                  {: System.out.println("Type Specifier"); :} 
+typeSpecifier ::= simpleTypeSpecifier:sTypeSpec
+                  {: RESULT = new TypeSpecifierClass(sTypeSpec); :} 
                   | 
-                  collectionType
-                  {: System.out.println("Type Specifier"); :} 
+                  collectionType:colType
+                  {: RESULT = new TypeSpecifierClass(colType); :} 
                   ;
 
-simpleTypeSpecifier ::= pathName
-                        {: System.out.println("Simple Type Specifier"); :} 
+simpleTypeSpecifier ::= pathName:pathName
+                        {: RESULT = new SimpleTypeSpecifierClass(pathName); :} 
                         ;
 
-pathName ::= NAME 
-             {: System.out.println("Path Name"); :} 
+pathName ::= NAME:name 
+             {: RESULT = new PathNameClass(name); :} 
              | 
-             pathName DOUBLECOLON NAME
+             pathName:pathName DOUBLECOLON NAME:name
+             {: RESULT = new PathNameClass(pathName,name); :}
              ;
 
-collectionType ::= collectionKind LPAREN simpleTypeSpecifier RPAREN
-                   {: System.out.println("Collection Type"); :} 
+collectionType ::= collectionKind:colKind LPAREN simpleTypeSpecifier:sTypeSpec RPAREN
+                   {: RESULT = new CollectionTypeClass(colKind,sTypeSpec); :} 
                    ;
 
-stereotype ::= PRE 
-               {: System.out.println("StereoType"); :} 
+stereotype ::= PRE:pre
+               {: RESULT = new StereotypeClass("pre"); :} 
                | 
-               POST 
-               {: System.out.println("StereoType"); :} 
+               POST:pos 
+               {: RESULT = new StereotypeClass("pos"); :} 
                ;
 
 
 /* Expressões */
 
-oclExpression ::= expression
-                  {: System.out.println("OCL Expression"); :} 
+oclExpression ::= expression:exp
+                  {: RESULT = new OclExpressionClass(exp); :} 
                   ;
 
-expression ::= logicalExpression
-               {: System.out.println("Expression"); :} 
+expression ::= logicalExpression:logExp
+               {: RESULT = new ExpressionClass(logExp); :} 
                ;
 
-collectionKind ::= BAG 
-                   {: System.out.println("Collection Kind"); :}
+collectionKind ::= BAG:bag 
+                   {: RESULT = new CollectionKindClass("bag"); :}
                    | 
-                   SET  
-                   {: System.out.println("Collection Kind"); :}
+                   SET:set  
+                   {: RESULT = new CollectionKindClass("set"); :}
                    |  
-                   SEQUENCE 
-                   {: System.out.println("Collection Kind"); :}
+                   SEQUENCE:sequence 
+                   {: RESULT = new CollectionKindClass("sequence"); :}
                    | 
-                   COLLECTION
-                   {: System.out.println("Collection Kind"); :}
+                   COLLECTION:collection
+                   {: RESULT = new CollectionKindClass("collection"); :}
 	           ;
 
-operationName ::= NAME 
-                  {: System.out.println("Operation Name"); :}
+operationName ::= NAME:name 
+                  {: RESULT = new OperationNameClass(name); :}
                   | 
-                  EQ 
-                  {: System.out.println("Operation Name"); :}
+                  EQ:eq
+                  {: RESULT = new OperationNameClass("=="); :}
                   | 
-                  PLUS 
-                  {: System.out.println("Operation Name"); :}
+                  PLUS:plus 
+                  {: RESULT = new OperationNameClass("+"); :}
                   | 
-                  MINUS 
-                  {: System.out.println("Operation Name"); :}
+                  MINUS:minus 
+                  {: RESULT = new OperationNameClass("-"); :}
                   | 
-                  LT 
-                  {: System.out.println("Operation Name"); :}
+                  LT:lt 
+                  {: RESULT = new OperationNameClass("<"); :}
                   | 
-                  LE 
-                  {: System.out.println("Operation Name"); :}
+                  LE:le 
+                  {: RESULT = new OperationNameClass("<="); :}
                   | 
-                  GE 
-                  {: System.out.println("Operation Name"); :}
+                  GE:ge 
+                  {: RESULT = new OperationNameClass(">="); :}
                   | 
-                  GT 
-                  {: System.out.println("Operation Name"); :}
+                  GT:gt 
+                  {: RESULT = new OperationNameClass(">"); :}
                   | 
-                  DIV 
-                  {: System.out.println("Operation Name"); :}
+                  DIV:div 
+                  {: RESULT = new OperationNameClass("/"); :}
                   | 
-                  TIMES 
-                  {: System.out.println("Operation Name"); :}
+                  TIMES:times 
+                  {: RESULT = new OperationNameClass("*"); :}
                   | 
-                  NE 
-                  {: System.out.println("Operation Name"); :}
+                  NE:ne 
+                  {: RESULT = new OperationNameClass("!="); :}
                   | 
-                  IMPLIES 
-                  {: System.out.println("Operation Name"); :}
+                  IMPLIES:implies 
+                  {: RESULT = new OperationNameClass("implies"); :}
                   | 
-                  NOT 
-                  {: System.out.println("Operation Name"); :}
+                  NOT:not
+                  {: RESULT = new OperationNameClass("not"); :}
                   | 
-                  XOR 
-                  {: System.out.println("Operation Name"); :}
+                  XOR:xor 
+                  {: RESULT = new OperationNameClass("^"); :}
                   | 
-                  AND
-                  {: System.out.println("Operation Name"); :}
+                  AND:and
+                  {: RESULT = new OperationNameClass("and"); :}
                   ;
 
-formalParameterList ::= NAME COLON typeSpecifier paramOpt 
-			{: System.out.println("Formal Parameter List"); :}
+formalParameterList ::= NAME:name COLON typeSpecifier:typeSpec paramOpt:paramOpt 
+						{: RESULT = new FormalParameterListClass(name,typeSpec,paramOpt); :}
                         | 
                         ;
 
-paramOpt ::= COMMA NAME COLON typeSpecifier paramOpt
-             {: System.out.println("Param Opt"); :}
+paramOpt ::= COMMA NAME:name COLON typeSpecifier:typeSpec paramOpt:paramOpt
+             {: RESULT = new ParamOptClass(name,typeSpec,paramOpt); :}
              | 
              ;
 
-logicalExpression ::= relationalExpression
-                      {: System.out.println("Logical Expression"); :} 
+logicalExpression ::= relationalExpression:relExp
+                      {: RESULT = new LogicalExpressionClass(relExp); :} 
                       |  
-	              relationalExpression logicalOperator logicalExpression
-                      {: System.out.println("Logical Expression"); :} 
+	              	  relationalExpression:relExp logicalOperator:logOp logicalExpression:logExp
+                      {: RESULT = new LogicalExpressionClass(relExp,logOp,relExp); :} 
                       ;
 
-logicalOperator ::= AND 
-		    {: System.out.println("Logical Operator"); :}
+logicalOperator ::= AND:and 
+		    		{: RESULT = new LogicalOperatorClass("and"); :}
                     | 
-                    OR 
-		    {: System.out.println("Logical Operator"); :}
+                    OR:or 
+		    		{: RESULT = new LogicalOperatorClass("or"); :}
                     | 
-                    XOR 
-		    {: System.out.println("Logical Operator"); :}
+                    XOR:xor 
+		    		{: RESULT = new LogicalOperatorClass("^"); :}
                     | 
-                    IMPLIES 
-		    {: System.out.println("Logical Operator"); :}
+                    IMPLIES:implies
+		    		{: RESULT = new LogicalOperatorClass("implies"); :}
                     ;
 
-relationalExpression ::= additiveExpression 
-			 {: System.out.println("Relational Expression"); :}
+relationalExpression ::= additiveExpression:addExp 
+			 			 {: RESULT = new RelationalExpressionClass(addExp); :}
                          | 
-                         additiveExpression relationalOperator additiveExpression 
-			 {: System.out.println("Relational Expression"); :}
+                         additiveExpression:addExp1 relationalOperator:relOp additiveExpression:addExp2 
+			 			 {: RESULT = new RelationalExpressionClass(addExp1,relOp,addExp2); :}
                          ;
 
-relationalOperator ::= EQ 
-		       {: System.out.println("Relational Operator"); :}
+relationalOperator ::= EQ:eq 
+		       		   {: RESULT = new RelationalOperatorClass("=="); :}
                        | 
-                       GT 
-		       {: System.out.println("Relational Operator"); :}
+                       GT:gt
+                       {: RESULT = new RelationalOperatorClass(">"); :}
                        | 
-                       LT 
-		       {: System.out.println("Relational Operator"); :}
+                       LT:lt
+                       {: RESULT = new RelationalOperatorClass("<"); :}
                        | 
-                       GE 
-		       {: System.out.println("Relational Operator"); :}
+                       GE:ge
+                       {: RESULT = new RelationalOperatorClass(">="); :}
                        | 
-                       LE 
-		       {: System.out.println("Relational Operator"); :}
-                       | 
-                       NE
-		       {: System.out.println("Relational Operator"); :}
+                       LE:le
+                       {: RESULT = new RelationalOperatorClass("<="); :}
+                       |
+                       NE:ne
+                       {: RESULT = new RelationalOperatorClass("!="); :}
                        ;
 
-additiveExpression ::= multiplicativeExpression additiveExpressionOpt
-		       {: System.out.println("Additive Expression"); :}
+additiveExpression ::= multiplicativeExpression:multExp additiveExpressionOpt:addExpOpt
+		       		   {: RESULT = new AdditiveExpressionClass(multExp,addExpOpt); :}
                        ;
 
-additiveExpressionOpt ::= additiveExpressionOpt addOperator multiplicativeExpression 
-                          {: System.out.println("Additive Expression Opt"); :}
+additiveExpressionOpt ::= additiveExpressionOpt:addExpOpt addOperator:addOp multiplicativeExpression:multExp 
+                          {: RESULT = new AdditiveExpressionOptClass(addExpOpt,addOp,multExp); :}
                           | 
                           ;
 
-addOperator ::= PLUS
-                {: System.out.println("Add Operator"); :} 
+addOperator ::= PLUS:plus
+                {: RESULT = new AddOperatorClass("+"); :} 
                 | 
-                MINUS
-                {: System.out.println("Add Operator"); :} 
+                MINUS:minus
+                {: RESULT = new AddOperatorClass("-"); :} 
                 ;
 
-multiplicativeExpression ::= unaryExpression multiplicativeExpressionOpt
-			     {: System.out.println("Multiplicative Expression"); :}
+multiplicativeExpression ::= unaryExpression:uExp multiplicativeExpressionOpt:multExpOpt
+			     			 {: RESULT = new MultiplicativeExpressionClass(uExp,multExpOpt); :}
                              ;
 
-multiplicativeExpressionOpt ::= multiplicativeExpressionOpt multiplyOperator unaryExpression 
- 			        {: System.out.println("Multiplicative Expression Opt"); :}
+multiplicativeExpressionOpt ::= multiplicativeExpressionOpt:multExpOpt multiplyOperator:multOp unaryExpression:uExp 
+ 			        			{: RESULT = new MultiplicativeExpressionOptClass(multExpOpt,multOp,uExp); :}
                                 | 
                                 ;
 
-unaryExpression ::= unaryOperator postfixExpression 
-                    {: System.out.println("Unary Expression"); :}
+unaryExpression ::= unaryOperator:uOp postfixExpression:postExp 
+                    {: RESULT = new UnaryExpressionClass(uOp,postExp); :}
                     | 
-                    postfixExpression 
-                    {: System.out.println("Unary Expression"); :}
+                    postfixExpression:postExp 
+                    {: RESULT = new UnaryExpressionClass(postExp); :}
                     ;
 
-unaryOperator ::= MINUS 
-		  {: System.out.println("Unary Operator"); :}
+unaryOperator ::= MINUS:minus 
+		  		  {: RESULT = new UnaryOperatorClass("-"); :}
                   | 
-                  NOT
-		  {: System.out.println("Unary Operator"); :}
+                  NOT:not
+		  		  {: RESULT = new UnaryOperatorClass("not"); :}
                   ;
 
-multiplyOperator ::= TIMES 
-		     {: System.out.println("Multiply Operator"); :}
+multiplyOperator ::= TIMES:times
+		     		 {: RESULT = new MultiplyOperatorClass("*"); :}
                      | 
-                     DIV
-		     {: System.out.println("Multiply Operator"); :}
+                     DIV:div
+		     		 {: RESULT = new MultiplyOperatorClass("*"); :}
                      ;
 
-postfixExpression ::= primaryExpression postfixExpressionOpt
-		      {: System.out.println("Postfix Expression"); :}
+postfixExpression ::= primaryExpression:priExp postfixExpressionOpt:postExpOpt
+				      {: RESULT = new PostFixExpressionClass(priExp,postExpOpt); :}
                       ;
 
-postfixExpressionOpt ::= postfixExpressionOpt operator propertyCall 
-			 {: System.out.println("Postfix Expression Opt"); :}
+postfixExpressionOpt ::= postfixExpressionOpt:postExpOpt operator:op propertyCall:proCall 
+			 			 {: RESULT = new PostFixExpressionOptClass(postExpOpt,op,proCall); :}
                          | 
                          ;
 
-operator ::= DOT 
-             {: System.out.println("Operator"); :}
+operator ::= DOT:dot 
+             {: RESULT = new OperatorClass("dot"); :}
              | 
-             ARROW
-             {: System.out.println("Operator"); :}
+             ARROW:arrow
+             {: RESULT = new OperatorClass("arrow"); :}
              ;
 
-primaryExpression ::= literalCollection 
-                      {: System.out.println("Primary Expression"); :}
+primaryExpression ::= literalCollection:litCol 
+                      {: RESULT = new PrimaryExpressionClass(litCol); :}
                       | 
-                      literal 
-                      {: System.out.println("Primary Expression"); :}
+                      literal:lit 
+                      {: RESULT = new PrimaryExpressionClass(lit); :}
                       | 
-                      propertyCall 
-                      {: System.out.println("Primary Expression"); :}
+                      propertyCall:propCall 
+                      {: RESULT = new PrimaryExpressionClass(propCall); :}
                       | 
-                      LPAREN expression RPAREN 
-                      {: System.out.println("Primary Expression"); :}
+                      LPAREN expression:exp RPAREN 
+                      {: RESULT = new PrimaryExpressionClass(exp); :}
                       | 
-                      ifExpression
-                      {: System.out.println("Primary Expression"); :}
+                      ifExpression:ifExp
+                      {: RESULT = new PrimaryExpressionClass(ifExp); :}
                       ;
 
-literalCollection ::= collectionKind LBRACKET collectionItemOpt RBRACKET
-                      {: System.out.println("Literal Collection"); :}
+literalCollection ::= collectionKind:colKind LBRACKET collectionItemOpt:colItemOpt RBRACKET
+                      {: RESULT = new LiteralCollectionClass(colKind,colItemOpt); :}
                       ;
 
-collectionItemOpt ::= collectionItem collectionItemOptTwo
-                      {: System.out.println("Collection Item Opt"); :} 
+collectionItemOpt ::= collectionItem:colItem1 collectionItemOptTwo:colItemOpt
+                      {: RESULT = new CollectionItemClass(colItem,colItemOpt); :} 
                       | 
                       ;
 
-collectionItemOptTwo ::= collectionItemOptTwo COMMA collectionItem 
-                         {: System.out.println("Collection Item Opt Two"); :}
+collectionItemOptTwo ::= collectionItemOptTwo:colItemOpt COMMA collectionItem:colItem 
+                         {: RESULT = new CollectionItemOptTwoClass(colItemOpt,colItem); :}
                          | 
                          ;
 
-collectionItem ::= expression collectionItemExpressionOpt 
-		   {: System.out.println("Collection Item"); :}
+collectionItem ::= expression:exp collectionItemExpressionOpt:colItemExpOpt 
+		   		   {: RESULT = new CollectionItemClass(exp,colItemExpOpt); :}
                    ;
 
-collectionItemExpressionOpt ::= DOUBLEDOT expression 
-				{: System.out.println("Collection Item Expression Opt"); :}
+collectionItemExpressionOpt ::= DOUBLEDOT expression:exp 
+								{: RESULT = new CollectionItemExpressionOptClass(exp); :}
                                 |
                                 ;
 
-literal ::= STRING 
-            {: System.out.println("Literal"); :}
+literal ::= STRING:string
+            {: RESULT = new LiteralClass("string"); :}
             | 
-            NUMBER 
-            {: System.out.println("Literal"); :}
+            NUMBER:number 
+            {: RESULT = new LiteralClass("number"); :}
             |
-            DOUBLE
-            {: System.out.println("Literal"); :}
+            DOUBLE:double
+            {: RESULT = new LiteralClass("double"); :}
             ;
             
 
-propertyCall ::= pathName timeExpression qualifiers propertyCallParameters 
-		 {: System.out.println("Property Call"); :}
+propertyCall ::= pathName:pathName timeExpression:timeExp qualifiers:qual propertyCallParameters:propCallParam 
+		 {: RESULT = new PropertyCallClass(pathName,timeExp,qual,propCallParam); :}
                  | 
-                 pathName timeExpression qualifiers  
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName timeExpression:timeExp qualifiers:qual  
+		 {: RESULT = new PropertyCallClass(pathName,timeExp,qual); :}
                  | 
-                 pathName timeExpression propertyCallParameters 
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName timeExpression:timeExp propertyCallParameters:propCallParam 
+		 {: RESULT = new PropertyCallClass(pathName,timeExp,propCallParam); :}
                  | 
-                 pathName timeExpression 
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName timeExpression:timeExp 
+		 {: RESULT = new PropertyCallClass(pathName,timeExp); :}
                  | 
-                 pathName qualifiers propertyCallParameters 
+                 pathName:pathName qualifiers:qual propertyCallParameters:propCallParam 
 		 {: System.out.println("Property Call"); :}
                  |
-                 pathName qualifiers
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName qualifiers:qual
+		 {: RESULT = new PropertyCallClass(pathName,qual); :}
                  | 
-                 pathName propertyCallParameters 
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName propertyCallParameters:propCallParam 
+		 {: RESULT = new PropertyCallClass(pathName,propCallParam); :}
                  |
-                 pathName
-		 {: System.out.println("Property Call"); :}
+                 pathName:pathName
+		 {: RESULT = new PropertyCallClass(pathName); :}
                  ;
 
 timeExpression ::= AT PRE
-		   {: System.out.println("Time Expression"); :}
+		   {: RESULT = new TimeExpressionClass(); :}
                    ;
 
-qualifiers ::= LCOL actualParameterList RCOL
-	       {: System.out.println("Qualifiers"); :}
+qualifiers ::= LCOL actualParameterList:actualParamList RCOL
+	       	   {: RESULT = new QualifiersClass(actualParamList); :}
                ;
 
-actualParameterList ::= expression actualParameterListOpt
-            	        {: System.out.println("Actual Parameter List"); :}
+actualParameterList ::= expression:exp actualParameterListOpt:actualParamListOpt
+            	        {: RESULT = new ActualParameterListClass(exp,actualParamListOpt); :}
                         ;
 
-actualParameterListOpt ::= COMMA expression actualParameterListOpt 
-	                   {: System.out.println("Actual Parameter List Opt"); :}
+actualParameterListOpt ::= COMMA expression:exp actualParameterListOpt:actualParamListOpt 
+	                   {: RESULT = new ActualParameterListOptClass(exp,actualParamListOpt); :}
                            | 
                            ;
 
-propertyCallParameters ::= LPAREN declarator actualParameterList RPAREN 
-                           {: System.out.println("Property Call Parameters"); :}
+propertyCallParametersClass ::= LPAREN declarator:dec actualParameterList:actualParamList RPAREN 
+                           {: RESULT = new PropertyCallParametersClass(dec,atualParamList); :}
                            | 
-                           LPAREN actualParameterList RPAREN 
-                           {: System.out.println("Property Call Parameters"); :}
+                           LPAREN actualParameterList:actualParamList RPAREN 
+                           {: RESULT = new PropertyCallParametersClass(atualParamList); :}
                            |
-                           LPAREN declarator RPAREN 
-                           {: System.out.println("Property Call Parameters"); :}
+                           LPAREN declarator:dec RPAREN 
+                           {: RESULT = new PropertyCallParametersClass(dec); :}
                            | 
                            LPAREN RPAREN
-                           {: System.out.println("Property Call Parameters"); :}
+                           {: RESULT = new PropertyCallParametersClass(); :}
                            ;
 
-declarator ::= NAME nameOpt simpleTypeSpecifierOpt SEMICOLON NAME COLON typeSpecifier EQ expression PIPE 
-               {: System.out.println("Declarator"); :}
+declarator ::= NAME:name nameOpt:nameOpt simpleTypeSpecifierOpt:sTypeSpecOpt SEMICOLON NAME:name2 COLON typeSpecifier:typeSpec EQ expression:exp PIPE 
+               {: RESULT = new DeclaratorClass(name,nameOpt,sTypeSpecOpt,name2,typeSpec,exp); :}
                | 
-               NAME nameOpt simpleTypeSpecifierOpt PIPE 
-               {: System.out.println("Declarator"); :}
+               NAME:name nameOpt:nameOpt simpleTypeSpecifierOpt:sTypeSpecOpt PIPE 
+               {: RESULT = new DeclaratorClass(name,nameOpt,sTypeSpecOpt); :}
                ;
 
-nameOpt ::= NAME nameOpt 
-            {: System.out.println("Name Opt"); :}
+nameOpt ::= NAME:name nameOpt:nameOpt 
+            {: RESULT = new NameOptClass(name,nameOpt); :}
             | 
-            nameOpt2
-            {: System.out.println("Name Opt"); :}
+            nameOpt2:nameOpt2
+            {: RESULT = new NameOptClass(nameOpt2); :}
             ;
 
-nameOpt2 ::=  COMMA NAME 
-              {: System.out.println("Name Opt Two"); :}
+nameOpt2 ::=  COMMA NAME:name 
+              {: RESULT = new NameOpt2Class(name); :}
               | 
               ;
 
-simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier 
-                           {: System.out.println("Simple Type Specifier Opt"); :}
+simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier:sTypeSpecOpt 
+                           {: RESULT = new SimpleTypeSpecifierOptClass(sTypeSpecOpt); :}
                            | 
                            ;
 
-ifExpression ::= IF expression THEN expression ELSE expression ENDIF
-                 {: System.out.println("If Expression"); :}
+ifExpression ::= IF expression:exp THEN expression:exp ELSE expression:exp ENDIF
+                 {: RESULT = new IfExpressionClass(exp,exp,exp); :}
                  ;
-
-
-
