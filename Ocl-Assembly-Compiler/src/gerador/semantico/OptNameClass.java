@@ -2,13 +2,15 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
-public class ContextDeclarationClass {
-
+public class OptNameClass {
+	
 	private Classe tipo;
 	private String codigo;
-
-	public ContextDeclarationClass(Object classifierContext) {
-		codigo = ((ClassifierContextClass) classifierContext).getCodigo();
+	
+	public OptNameClass(Object p) {
+		AnalisadorSemantico analisador = AnalisadorSemantico.getInstance();
+		tipo = analisador.getGerenciador().getClasse("String");
+		codigo = (String)p;
 	}
 
 	public String getCodigo() {

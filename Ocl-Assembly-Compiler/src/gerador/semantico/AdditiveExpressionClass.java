@@ -16,7 +16,7 @@ public class AdditiveExpressionClass{
 		}
 		else{
 			this.tipo = optAdd.getTipo();
-			this.codigo = optAdd.getCodigo();
+			this.codigo = multi.getCodigo() + optAdd.getCodigo();
 		}
 	}
 	

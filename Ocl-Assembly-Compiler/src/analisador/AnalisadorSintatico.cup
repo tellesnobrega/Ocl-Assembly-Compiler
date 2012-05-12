@@ -85,7 +85,7 @@ oclExpressions ::= constraint oclExpressions
 
 constraint ::= contextDeclaration stereotype NAME COLON oclExpression stereotypeOpt 
                {: System.out.println("Constraint"); :}               
-	       | 
+	    	   | 
                contextDeclaration stereotype COLON oclExpression stereotypeOpt 
                {: System.out.println("Constraint"); :}  
                ;
@@ -432,7 +432,7 @@ propertyCallParameters ::= LPAREN declarator actualParameterList RPAREN
                            LPAREN actualParameterList RPAREN 
                            {: System.out.println("Property Call Parameters"); :}
                            |
-			   LPAREN declarator RPAREN 
+                           LPAREN declarator RPAREN 
                            {: System.out.println("Property Call Parameters"); :}
                            | 
                            LPAREN RPAREN

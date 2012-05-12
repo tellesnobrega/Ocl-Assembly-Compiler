@@ -1,6 +1,6 @@
 package gerador.semantico;
 
-public class RelationalOperatorClass{
+public class RelationalOperatorClass implements OperatorInterface{
 
 	private String operador;
 	
@@ -8,6 +8,7 @@ public class RelationalOperatorClass{
 		this.operador = (String) operador;
 	}
 
+	@Override
 	public String getOperador() {
 		return operador;
 	}

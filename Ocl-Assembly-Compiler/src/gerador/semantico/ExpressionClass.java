@@ -1,7 +1,10 @@
 package gerador.semantico;
+
+import gerador.parser.Classe;
+
 public class ExpressionClass {
 
-	private String tipo;
+	private Classe tipo;
 	private String codigo;
 
 	public ExpressionClass() {
@@ -11,7 +14,7 @@ public class ExpressionClass {
 		return codigo;
 	}
 
-	public String getTipo() {
+	public Classe getTipo() {
 		return tipo;
 	}
 }

@@ -1,4 +1,4 @@
-package gerador;
+package gerador.semantico;
 
 public class Constant {
 	private static final String FILE_SEPARATOR = System.getProperty("file.separator");

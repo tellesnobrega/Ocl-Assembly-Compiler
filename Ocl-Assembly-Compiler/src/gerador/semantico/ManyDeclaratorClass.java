@@ -1,7 +1,10 @@
 package gerador.semantico;
+
+import gerador.parser.Classe;
+
 public class ManyDeclaratorClass {
 
-	private String tipo;
+	private Classe tipo;
 	private String codigo;
 
 	public ManyDeclaratorClass() {
@@ -11,7 +14,7 @@ public class ManyDeclaratorClass {
 		return codigo;
 	}
 
-	public String getTipo() {
+	public Classe getTipo() {
 		return tipo;
 	}
 }

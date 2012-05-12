@@ -1,17 +1,25 @@
 package gerador.semantico;
+
+import gerador.parser.Classe;
+
 public class SimpleTypeSpecifierClass {
 
-	private String tipo;
-	private String codigo;
-
-	public SimpleTypeSpecifierClass() {
+	private Classe tipo;
+	private PathNameClass pathName;
+	
+	public SimpleTypeSpecifierClass(PathNameClass pathName) {
+		this.setPathName(pathName);
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public String getTipo() {
+	public Classe getTipo() {
 		return tipo;
+	}
+
+	public PathNameClass getPathName() {
+		return pathName;
+	}
+
+	public void setPathName(PathNameClass pathName) {
+		this.pathName = pathName;
 	}
 }

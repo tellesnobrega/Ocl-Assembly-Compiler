@@ -1,10 +1,10 @@
 package gerador.semantico;
-public class OPTPropertyCallClass {
+public class OptRelationalExpressionClass {
 
 	private String tipo;
 	private String codigo;
 
-	public OPTPropertyCallClass() {
+	public OptRelationalExpressionClass() {
 	}
 
 	public String getCodigo() {

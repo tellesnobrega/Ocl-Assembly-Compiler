@@ -8,8 +8,8 @@ public class CollectionKindClass {
 	private String valor;
 	private String codigo;
 
-	public CollectionKindClass(Object collecao) {
-		this.valor = (String) collecao;
+	public CollectionKindClass(Object colecao) {
+		this.valor = (String) colecao;
 	}
 	
 	public String getValor() {

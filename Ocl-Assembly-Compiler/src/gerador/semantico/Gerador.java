@@ -1,4 +1,4 @@
-package gerador;
+package gerador.semantico;
 
 import java.io.IOException;
 
