@@ -19,7 +19,9 @@ public class PrimaryExpressionClass {
 			this.tipo = ((PropertyCallClass) objeto).getTipo();
 			this.codigo = ((PropertyCallClass) objeto).getCodigo();
 		}
-		//Falta fazer o LPAREN expression RPAREN, nao sei como faz. Wagner
+		if (tipo.equals("logicalExpression")) {
+			this.tipo = ((LogicalExpressionClass) objeto).getTipo();
+			this.codigo = "(" + ((LogicalExpressionClass) objeto).getCodigo() + ")";
 		if (tipo.equals("IfExpressionClass")) {
 			this.tipo = ((IfExpressionClass) objeto).getTipo();
 			this.codigo = ((IfExpressionClass) objeto).getCodigo();
