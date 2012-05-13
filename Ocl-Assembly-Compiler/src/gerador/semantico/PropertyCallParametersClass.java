@@ -2,12 +2,11 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyCallParametersClass {
 
-	private List<Classe> parametros = new ArrayList<Classe>();
+	private List<Classe> parametros;
 	private String codigo;
 
 	public PropertyCallParametersClass(Object apl) {

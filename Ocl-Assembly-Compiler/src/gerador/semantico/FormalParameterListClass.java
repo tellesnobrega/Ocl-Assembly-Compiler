@@ -2,17 +2,16 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
-public class BooleanClass {
+public class FormalParameterListClass {
 	
 	private Classe tipo;
 	private String codigo;
 	
-	public BooleanClass(Object m) {
-		AnalisadorSemantico analisador = AnalisadorSemantico.getInstance();
-		this.tipo = analisador.getGerenciador().getClasse("Boolean");
-		this.codigo = (String) m;
+	public FormalParameterListClass(Object n,Object ts, Object po) {
+		String name = (String) n;
+		TypeSpecifierClass typeSpec = (TypeSpecifierClass) ts;
+		ParamOptClass paramOpt = (ParamOptClass) po;
 	}
-	
 
 	public Classe getTipo() {
 		return tipo;

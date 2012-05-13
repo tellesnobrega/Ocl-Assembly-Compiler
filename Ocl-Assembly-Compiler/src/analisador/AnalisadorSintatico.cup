@@ -169,7 +169,7 @@ collectionKind ::= BAG:bag
                    | 
                    COLLECTION:collection
                    {: RESULT = new CollectionKindClass("collection"); :}
-	           ;
+	           	   ;
 
 operationName ::= NAME:name 
                   {: RESULT = new OperationNameClass(name); :}
@@ -467,3 +467,13 @@ simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier:sTypeSpecOpt
 ifExpression ::= IF expression:exp THEN expression:exp ELSE expression:exp ENDIF
                  {: RESULT = new IfExpressionClass(exp,exp,exp); :}
                  ;
+
+boolean	::= TRUE:t
+			{: RESULT = new BooleanClass("True"); :}
+			| FALSE:f
+			{: RESULT = new BooleanClass("False"); :};             
+			
+number	::= DOUBLE:d
+		    {:RESULT = new NumberClass(d, "Double"); :} 
+			| INTEGER :i
+			{: RESULT = new NumberClass(i, "Integer"); :};    

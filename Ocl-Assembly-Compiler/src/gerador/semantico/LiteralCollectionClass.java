@@ -7,7 +7,9 @@ public class LiteralCollectionClass {
 	private Classe tipo;
 	private String codigo;
 
-	public LiteralCollectionClass() {
+	public LiteralCollectionClass(Object collectionKind, Object collectionItemOpt) {
+		CollectionKindClass colKind = (CollectionKindClass) collectionKind;
+		CollectionItemOptClass colItemOpt = (CollectionItemOptClass) collectionItemOpt;
 	}
 
 	public String getCodigo() {

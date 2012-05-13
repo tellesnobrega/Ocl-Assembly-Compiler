@@ -3,8 +3,7 @@ package main;
 import java.io.FileReader;
 import java.io.IOException;
 
-import codigoGerado.AnalisadorLexico;
-import codigoGerado.parser;
+import java_cup.parser;
 
 public class Compilador {
 	public static void executaAnalisadorLexico(String exemplo) throws IOException {

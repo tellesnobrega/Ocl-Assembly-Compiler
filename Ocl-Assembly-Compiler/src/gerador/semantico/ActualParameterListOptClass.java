@@ -9,7 +9,17 @@ public class ActualParameterListOptClass {
 	private List<Classe> parametros;
 	private String codigo;
 
-	public ActualParameterListOptClass() {
+	public ActualParameterListOptClass(Object exp, Object aplo) {
+		ExpressionClass expression = (ExpressionClass) exp;
+		ActualParameterListOptClass parameterListOpt = (ActualParameterListOptClass) aplo;
+		parametros.add(expression.getTipo());
+		
+		if (parameterListOpt != null) {
+			parametros.addAll(parameterListOpt.getParametros());
+			this.codigo =  expression.getCodigo()+ ", " + this.codigo;
+		} else {
+			this.codigo = expression.getCodigo() + ")";
+		}
 	}
 
 	public String getCodigo() {

@@ -9,7 +9,7 @@ public class AdditiveExpressionClass{
 	
 	public AdditiveExpressionClass(Object multiExp, Object OptAddExp){
 		MultiplicativeExpressionClass multi = (MultiplicativeExpressionClass) multiExp;
-		OptAdditiveExpressionClass optAdd = (OptAdditiveExpressionClass) OptAddExp;
+		AdditiveExpressionOptClass optAdd = (AdditiveExpressionOptClass) OptAddExp;
 		if(optAdd == null){
 			this.tipo = multi.getTipo();
 			this.codigo = multi.getCodigo();

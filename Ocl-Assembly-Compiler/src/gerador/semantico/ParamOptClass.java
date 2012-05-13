@@ -2,17 +2,16 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
-public class BooleanClass {
+public class ParamOptClass {
 	
 	private Classe tipo;
 	private String codigo;
 	
-	public BooleanClass(Object m) {
-		AnalisadorSemantico analisador = AnalisadorSemantico.getInstance();
-		this.tipo = analisador.getGerenciador().getClasse("Boolean");
-		this.codigo = (String) m;
+	public ParamOptClass(Object n, Object ts, Object po) {
+		String name = (String) n;
+		TypeSpecifierClass typeSpec = (TypeSpecifierClass) ts;
+		ParamOptClass paramOpt = (ParamOptClass) po;
 	}
-	
 
 	public Classe getTipo() {
 		return tipo;
@@ -29,4 +28,5 @@ public class BooleanClass {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
+	
 }

@@ -4,22 +4,21 @@ import gerador.parser.Classe;
 
 import java.util.List;
 
-
 public class ActualParameterListClass {
 
 	private List<Classe> parametros;
 	private String codigo;
 
-	public ActualParameterListClass(Object expression, Object actualParameterListOpt) {
-		ExpressionClass l = (ExpressionClass) expression;
-		ActualParameterListOptClass m = (ActualParameterListOptClass) actualParameterListOpt;
-		parametros.add(l.getTipo());
+	public ActualParameterListClass(Object le, Object aplo) {
+		LogicalExpressionClass logicalExp = (LogicalExpressionClass) le;
+		ActualParameterListOptClass parameterListOpt = (ActualParameterListOptClass) aplo;
+		parametros.add(logicalExp.getTipo());
 		
-		if (m != null) {
-			parametros.addAll(m.getParametros());
-			this.codigo =  l.getCodigo()+ ", " + m.getCodigo();
+		if (parameterListOpt != null) {
+			parametros.addAll(parameterListOpt.getParametros());
+			this.codigo =  logicalExp.getCodigo()+ ", " + parameterListOpt.getCodigo();
 		} else {
-			this.codigo = l.getCodigo() + ")";
+			this.codigo = logicalExp.getCodigo() + ")";
 		}
 	}
 

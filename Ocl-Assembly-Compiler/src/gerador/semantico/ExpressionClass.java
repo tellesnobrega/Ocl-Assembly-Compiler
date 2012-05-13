@@ -7,7 +7,8 @@ public class ExpressionClass {
 	private Classe tipo;
 	private String codigo;
 
-	public ExpressionClass() {
+	public ExpressionClass(Object logicExpression) {
+		LogicalExpressionClass logExp = (LogicalExpressionClass) logicExpression;
 	}
 
 	public String getCodigo() {

@@ -7,8 +7,9 @@ public class MultiplicativeExpressionClass{
 	private Classe tipo;
 	private String codigo;
 	
-	public MultiplicativeExpressionClass(Object unaryExp ){
+	public MultiplicativeExpressionClass(Object unaryExp, Object multExpOpt ){
 		UnaryExpressionClass unary = (UnaryExpressionClass) unaryExp;
+		MultiplicativeExpressionOptClass mult = (MultiplicativeExpressionOptClass) multExpOpt;
 		//Tem mais coisas pra fazer aqui (de acordo com o de S), mas nao sei nem pra onde vai. Wagner.
 		if(unary != null){
 			this.tipo = unary.getTipo();

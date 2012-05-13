@@ -108,13 +108,6 @@ public class AnalisadorSemantico {
 			} else {
 				contexto = gerenciador.getClasse(classe.getNome());
 			}
-		} else if (o instanceof PropertyCallColClass) {
-			Classe classe = ((PropertyCallColClass) o).getTipo();
-			if (classe.ehColecao()) {
-				contexto = (Colecao) classe;
-			} else {
-				contexto = gerenciador.getClasse(classe.getNome());
-			}
 		} else {
 			Classe classe = ((PrimaryExpressionClass) o).getTipo();
 			if (classe.ehColecao()) {
