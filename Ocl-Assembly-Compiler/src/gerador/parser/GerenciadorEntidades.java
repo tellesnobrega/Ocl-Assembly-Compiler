@@ -198,11 +198,11 @@ public class GerenciadorEntidades {
 		Metodo min = new Metodo("min", real, number);
 		Metodo round = new Metodo("round", integer);
 		Metodo floor = new Metodo("floor", integer);
-		Metodo concat = new Metodo("concat", "__add__(",  string, string);
-		Metodo size = new Metodo("size", "__len__(",  integer);
-		Metodo lower = new Metodo("toLower", "lower(",  string);
-		Metodo upper = new Metodo("toUpper", "upper(", string);
-		Metodo substring = new Metodo("substring", "__getSlice__(",  string, integer, integer);
+		Metodo concat = new Metodo("concat", string, string);
+		Metodo size = new Metodo("size",  integer);
+		Metodo lower = new Metodo("toLower", string);
+		Metodo upper = new Metodo("toUpper", string);
+		Metodo substring = new Metodo("substring", string, integer, integer);
 
 		try {
 			number.addMetodo(modulos);

@@ -159,16 +159,16 @@ expression ::= logicalExpression:logExp
                ;
 
 collectionKind ::= BAG:bag 
-                   {: RESULT = new CollectionKindClass("bag"); :}
+                   {: RESULT = new CollectionKindClass("Bag"); :}
                    | 
                    SET:set  
-                   {: RESULT = new CollectionKindClass("set"); :}
+                   {: RESULT = new CollectionKindClass("Set"); :}
                    |  
                    SEQUENCE:sequence 
-                   {: RESULT = new CollectionKindClass("sequence"); :}
+                   {: RESULT = new CollectionKindClass("Sequence"); :}
                    | 
                    COLLECTION:collection
-                   {: RESULT = new CollectionKindClass("collection"); :}
+                   {: RESULT = new CollectionKindClass("Collection"); :}
 	           	   ;
 
 operationName ::= NAME:name 
@@ -230,8 +230,8 @@ paramOpt ::= COMMA NAME:name COLON typeSpecifier:typeSpec paramOpt:paramOpt
 logicalExpression ::= relationalExpression:relExp
                       {: RESULT = new LogicalExpressionClass(relExp); :} 
                       |  
-	              	  relationalExpression:relExp logicalOperator:logOp logicalExpression:logExp
-                      {: RESULT = new LogicalExpressionClass(relExp,logOp,relExp); :} 
+	              	  relationalExpression:relExp logicalOperator:logOp logicalExpression:logExp2
+                      {: RESULT = new LogicalExpressionClass(relExp,logOp,relExp2); :} 
                       ;
 
 logicalOperator ::= AND:and 

@@ -12,7 +12,6 @@ public class Metodo extends Elemento {
 	private boolean metodoFinal;
 
 	private String nome;
-	private String codigoPython;
 	private VisibilidadeKind visibilidade;
 	private Classe tipoRetorno;
 	private List<Parametro> parametros;
@@ -25,15 +24,6 @@ public class Metodo extends Elemento {
 		}
 	}
 	
-	public Metodo(String nomeOp, String codigoPython, Classe tipoRetorno, Classe... tiposParametros) {
-		this(nomeOp);
-		this.tipoRetorno = tipoRetorno;
-		this.codigoPython = codigoPython;
-		for (Classe classe : tiposParametros) {
-			addParametro(new Parametro("", classe));
-		}
-	}
-
 	public Metodo(String nome) {
 		this.parametros = new ArrayList<Parametro>();
 		this.nome = nome;
@@ -141,11 +131,4 @@ public class Metodo extends Elemento {
 		}
 	}
 
-	public String getCodigoPython() {
-		return codigoPython;
-	}
-
-	public void setCodigoPython(String codigoPython) {
-		this.codigoPython = codigoPython;
-	}
 }
