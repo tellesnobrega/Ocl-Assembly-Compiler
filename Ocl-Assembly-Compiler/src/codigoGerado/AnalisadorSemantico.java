@@ -1,8 +1,10 @@
-package gerador.semantico;
+package gerador;
 
 import gerador.parser.Classe;
 import gerador.parser.Colecao;
 import gerador.parser.GerenciadorEntidades;
+import gerador.semantico.PrimaryExpressionClass;
+import gerador.semantico.PropertyCallClass;
 
 import java.util.HashMap;
 import java.util.Map;

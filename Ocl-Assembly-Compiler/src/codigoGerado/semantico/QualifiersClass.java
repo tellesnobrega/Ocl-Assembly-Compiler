@@ -2,12 +2,12 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
-public class QualifierClass {
+public class QualifiersClass {
 	
 	private String codigo;
 	private Classe tipo;
 	
-	public QualifierClass(Object exp, Object apl) {
+	public QualifiersClass(Object exp, Object apl) {
 		ExpressionClass expression = (ExpressionClass) exp;
 		ActualParameterListClass actualParamList = (ActualParameterListClass) apl;
 		
