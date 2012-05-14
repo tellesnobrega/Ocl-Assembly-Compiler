@@ -7,8 +7,9 @@ public class SimpleTypeSpecifierClass {
 	private Classe tipo;
 	private PathNameClass pathName;
 	
-	public SimpleTypeSpecifierClass(PathNameClass pathName) {
-		this.setPathName(pathName);
+	public SimpleTypeSpecifierClass(Object pathName) {
+		PathNameClass path = (PathNameClass)pathName;
+		this.setPathName(path);
 	}
 
 	public Classe getTipo() {

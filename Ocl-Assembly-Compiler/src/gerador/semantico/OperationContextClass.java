@@ -6,14 +6,16 @@ public class OperationContextClass {
 	private String codigo;
 	private Classe tipo;
 	
-	public OperationContextClass(Object on,Object fpl,Object rType) {
+	public OperationContextClass(Object n, Object on,Object fpl,Object rType) {
+		String name = (String) n;
 		OperationNameClass opName = (OperationNameClass) on;
 		FormalParameterListClass formParamList = (FormalParameterListClass) fpl;
 		ReturnTypeClass returnType = (ReturnTypeClass) rType;
 		
 	}
 	
-	public OperationContextClass(Object on, Object fpl) {
+	public OperationContextClass(Object n,Object on, Object fpl) {
+		String name = (String) n;
 		OperationNameClass opName = (OperationNameClass) on;
 		FormalParameterListClass formParamList = (FormalParameterListClass) fpl;
 		

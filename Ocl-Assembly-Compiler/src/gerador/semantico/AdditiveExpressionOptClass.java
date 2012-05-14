@@ -7,9 +7,11 @@ public class AdditiveExpressionOptClass {
 	private Classe tipo;
 	private String codigo;
 	
-	public AdditiveExpressionOptClass(Object multiExp, Object OptAddExp){
+	public AdditiveExpressionOptClass(Object addOpt, Object addOp, Object multiExp){
 		MultiplicativeExpressionClass multi = (MultiplicativeExpressionClass) multiExp;
-		AdditiveExpressionOptClass optAdd = (AdditiveExpressionOptClass) OptAddExp;
+		AdditiveExpressionOptClass optAdd = (AdditiveExpressionOptClass) addOpt;
+		AddOperatorClass addOperator = (AddOperatorClass) addOp;
+		//TODO Consertar
 		if(optAdd == null){
 			this.setTipo(multi.getTipo());
 			this.setCodigo(multi.getCodigo());

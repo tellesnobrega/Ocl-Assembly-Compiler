@@ -1,5 +1,6 @@
 package gerador.semantico;
 
+import gerador.AnalisadorSemantico;
 import gerador.parser.Classe;
 import gerador.parser.Pacote;
 
@@ -10,8 +11,9 @@ public class PathNameClass {
 	private Classe tipo;
 	private String codigo;
 
-	public PathNameClass(String n, Object doubleColon, Object pn) {
+	public PathNameClass(Object name, Object pn) {
 		this.navegacaoEntrePacotes = true;
+		String n = (String) name;
 		PathNameClass pathName = (PathNameClass) pn;
 		Pacote pacote = analisador.getGerenciador().getPacotes().getPacote(n);
 		if (pacote == null) {
@@ -24,6 +26,10 @@ public class PathNameClass {
 					+ n);
 		}
 		this.codigo = ((PathNameClass) pn).getCodigo();
+	}
+	
+	public PathNameClass(Object name) {
+		String n = (String) name;
 	}
 
 	public String getCodigo() {

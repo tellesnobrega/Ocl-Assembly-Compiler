@@ -34,8 +34,8 @@ integer = [+-]?{number}
 "--"([ -~])*							{ 											}
 "--"([^\n\r])*([-~])*[\n\r]				{ 											}
 "collection"		 					{ return symbol(sym.COLLECTION);			} 
-"pre" 				{ return symbol(sym.PRE);					}
-"post" 				{ return symbol(sym.POST); 					}
+"pre" 									{ return symbol(sym.PRE);					}
+"post" 									{ return symbol(sym.POST); 					}
 "if"		 							{ return symbol(sym.IF); 					}
 "then"		 							{ return symbol(sym.THEN); 					}
 "else"		 							{ return symbol(sym.ELSE);					}
@@ -69,7 +69,7 @@ integer = [+-]?{number}
 "|"			 							{ return symbol(sym.PIPE); 					}
 "->"		 							{ return symbol(sym.ARROW); 				}
 "@" 									{ return symbol(sym.AT);					}
-{number}		 						{ return symbol(sym.NUMBER, Integer.parseInt(yytext())); 	}
+{integer}		 						{ return symbol(sym.INTEGER, yytext()); 	}
 {integer}\.{number}([eE][+-]?{number})?	{ return symbol(sym.DOUBLE, yytext());		}			
 ({letter} | _)({letter} | {number} | _)*	{ return symbol(sym.NAME, yytext()); 		}
 "'"([ -&(-~]  | \\')*"'"            	{ return symbol(sym.STRING, yytext());		}

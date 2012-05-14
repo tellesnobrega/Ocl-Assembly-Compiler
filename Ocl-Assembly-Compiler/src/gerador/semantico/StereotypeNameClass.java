@@ -4,7 +4,8 @@ public class StereotypeNameClass {
 	private String tipo;
 	private String codigo;
 
-	public StereotypeNameClass() {
+	public StereotypeNameClass(Object name) {
+		String n = (String) name;
 	}
 
 	public String getCodigo() {

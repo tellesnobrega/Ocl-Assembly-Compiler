@@ -11,6 +11,7 @@ public class FormalParameterListClass {
 		String name = (String) n;
 		TypeSpecifierClass typeSpec = (TypeSpecifierClass) ts;
 		ParamOptClass paramOpt = (ParamOptClass) po;
+		this.codigo = name + ":" + typeSpec.getCodigo() + paramOpt.getCodigo();
 	}
 
 	public Classe getTipo() {

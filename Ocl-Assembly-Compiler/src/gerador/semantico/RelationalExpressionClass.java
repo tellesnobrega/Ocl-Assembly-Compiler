@@ -1,5 +1,6 @@
 package gerador.semantico;
 
+import gerador.AnalisadorSemantico;
 import gerador.parser.Classe;
 
 public class RelationalExpressionClass {

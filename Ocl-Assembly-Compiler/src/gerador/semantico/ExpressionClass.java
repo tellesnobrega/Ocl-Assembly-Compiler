@@ -9,6 +9,8 @@ public class ExpressionClass {
 
 	public ExpressionClass(Object logicExpression) {
 		LogicalExpressionClass logExp = (LogicalExpressionClass) logicExpression;
+		this.tipo = logExp.getTipo();
+		this.codigo = logExp.getCodigo();
 	}
 
 	public String getCodigo() {

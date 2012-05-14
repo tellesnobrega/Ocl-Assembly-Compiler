@@ -23,7 +23,13 @@ public class PrimaryExpressionClass {
 		if (tipo.equals("IfExpressionClass")) {
 			this.tipo = ((IfExpressionClass) objeto).getTipo();
 			this.codigo = ((IfExpressionClass) objeto).getCodigo();
-			}
+		}
+		if(tipo.equals("expression")) {
+			this.tipo = ((ExpressionClass) objeto).getTipo();
+			this.codigo = ((ExpressionClass) objeto).getCodigo();
+		}
+		
+		
 	}
 	
 	public Classe getTipo(){

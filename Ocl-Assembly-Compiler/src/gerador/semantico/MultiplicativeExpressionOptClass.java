@@ -7,7 +7,7 @@ public class MultiplicativeExpressionOptClass {
 	private String codigo;
 	private Classe tipo;
 	
-	public MultiplicativeExpressionOptClass(Object multExpOpt, Object multOp, UnaryExpressionClass uExp) {
+	public MultiplicativeExpressionOptClass(Object multExpOpt, Object multOp, Object uExp) {
 		MultiplicativeExpressionOptClass multExp = (MultiplicativeExpressionOptClass) multExpOpt;
 		MultiplyOperatorClass mo = (MultiplyOperatorClass) multOp;
 		UnaryExpressionClass unary = (UnaryExpressionClass) uExp;

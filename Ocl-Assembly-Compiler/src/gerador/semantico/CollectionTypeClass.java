@@ -10,7 +10,7 @@ public class CollectionTypeClass {
 	public CollectionTypeClass(Object ck, Object sts) {
 		CollectionKindClass colKind = (CollectionKindClass) ck;
 		SimpleTypeSpecifierClass sTypeSpec = (SimpleTypeSpecifierClass) sts;
-		
+		this.codigo = colKind.getCodigo() + "(" + sTypeSpec.getPathName() + ")";
 	}
 
 	public String getCodigo() {

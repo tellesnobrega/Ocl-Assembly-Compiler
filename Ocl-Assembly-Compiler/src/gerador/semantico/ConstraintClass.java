@@ -11,7 +11,18 @@ public class ConstraintClass {
 		OclExpressionClass oclExp = (OclExpressionClass) oclE;
 		StereotypeOptClass stereotypeOpt = (StereotypeOptClass) sOpt;
 		
-//		this.codigo = 
+		this.codigo = contextDeclaration.getCodigo() + stereotype.getCodigo() + 
+				name + ":" + oclExp.getCodigo() + stereotypeOpt.getCodigo();
+	}
+	
+	public ConstraintClass(Object cd, Object s, Object oclE, Object sOpt) {
+		ContextDeclarationClass contextDeclaration = (ContextDeclarationClass) cd;
+		StereotypeClass stereotype = (StereotypeClass) s;
+		OclExpressionClass oclExp = (OclExpressionClass) oclE;
+		StereotypeOptClass stereotypeOpt = (StereotypeOptClass) sOpt;
+		
+		this.codigo = contextDeclaration.getCodigo() + stereotype.getCodigo() + 
+				":" + oclExp.getCodigo() + stereotypeOpt.getCodigo();
 	}
 
 	public String getCodigo() {

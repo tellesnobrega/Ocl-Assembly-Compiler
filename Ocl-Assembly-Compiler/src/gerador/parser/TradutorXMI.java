@@ -25,8 +25,9 @@ public class TradutorXMI {
         try {
             gerenciadorEntidades.read(arquivoXmi);
             
-            for (Enumeration enumeration : gerenciadorEntidades.getPacotes().getAllEnumerations())
+            for (Enumeration enumeration : gerenciadorEntidades.getPacotes().getAllEnumerations()){
             	enums.put(enumeration.getNome(), enumeration);
+            }
             
             for (Classe classe : gerenciadorEntidades.getPacotes().getAllClasses()) {
                 Enumeration enume;

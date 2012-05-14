@@ -10,11 +10,15 @@ public class MultiplicativeExpressionClass{
 	public MultiplicativeExpressionClass(Object unaryExp, Object multExpOpt ){
 		UnaryExpressionClass unary = (UnaryExpressionClass) unaryExp;
 		MultiplicativeExpressionOptClass mult = (MultiplicativeExpressionOptClass) multExpOpt;
-		//Tem mais coisas pra fazer aqui (de acordo com o de S), mas nao sei nem pra onde vai. Wagner.
 		if(unary != null){
 			this.tipo = unary.getTipo();
-			this.codigo = unary.getCodigo();
+			this.codigo = unary.getCodigo() + mult.getCodigo();
 		}
+		else {
+			this.tipo = mult.getTipo();
+			this.codigo = mult.getCodigo();
+		}
+		
 	}
 	
 	public Classe getTipo(){

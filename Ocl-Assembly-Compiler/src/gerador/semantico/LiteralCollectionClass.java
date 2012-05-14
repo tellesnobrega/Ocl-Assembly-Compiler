@@ -10,6 +10,7 @@ public class LiteralCollectionClass {
 	public LiteralCollectionClass(Object collectionKind, Object collectionItemOpt) {
 		CollectionKindClass colKind = (CollectionKindClass) collectionKind;
 		CollectionItemOptClass colItemOpt = (CollectionItemOptClass) collectionItemOpt;
+		this.codigo = colKind.getCodigo() + "{" + colItemOpt.getCodigo() + "}";
 	}
 
 	public String getCodigo() {

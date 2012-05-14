@@ -15,6 +15,10 @@ public class PropertyCallParametersClass {
 			this.codigo = ((ActualParameterListClass) apl).getCodigo();
 		}
 	}
+	
+	public PropertyCallParametersClass() {
+		this.codigo = "()";
+	}
 
 	public String getCodigo() {
 		return codigo;

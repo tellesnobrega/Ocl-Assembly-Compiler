@@ -1,4 +1,9 @@
 import java_cup.runtime.*;
+import gerador.semantico.*;
+import gerador.*;
+action code {:
+  private AnalisadorSemantico atual = AnalisadorSemantico.getInstance();
+:}
 
 parser code {:
     
@@ -34,7 +39,7 @@ parser code {:
 :};
 
 /* Terminais */
-terminal 		RCOL, LCOL, RPAREN, LPAREN, RBRACKET, LBRACKET;
+terminal 		RPAREN, LPAREN, RBRACKET, LBRACKET;
 terminal 		XOR, OR, AND, NOT;
 terminal 		EQ, GT, LT, GE, LE, NE;
 terminal 		PLUS, MINUS;
@@ -43,9 +48,8 @@ terminal 		BAG, SET, SEQUENCE, COLLECTION;
 terminal 		PRE, POST;
 terminal 		IF, THEN, ELSE, ENDIF;
 terminal 		COLON, DOUBLECOLON, CONTEXT, COMMA, IMPLIES, DOT, ARROW, DOUBLEDOT, AT, PIPE, SEMICOLON; 
-terminal String NAME, STRING, DOUBLE;
+terminal String NAME, STRING, INTEGER, DOUBLE;
 terminal String	TRUE, FALSE;
-terminal Integer NUMBER;
 
 
 /* Não terminais */
@@ -56,13 +60,13 @@ non terminal    formalParameterList;
 non terminal    returnType, typeSpecifier, simpleTypeSpecifier, collectionType, collectionKind;
 non terminal    pathName; 
 
-non terminal 	expression, multiplicativeExpression, multiplicativeExpressionOpt, logicalExpression,           relationalExpression;
+non terminal 	expression, multiplicativeExpression, multiplicativeExpressionOpt, logicalExpression, relationalExpression;
 non terminal	additiveExpression, additiveExpressionOpt, ifExpression, primaryExpression;
 non terminal 	postfixExpressionOpt, unaryExpression, postfixExpression, timeExpression;
 non terminal 	collectionItemOpt, collectionItem, collectionItemOptTwo;
 non terminal	paramOpt, relationalOperator, addOperator, logicalOperator, operator, multiplyOperator, unaryOperator;
-non terminal    qualifiers, propertyCallParameters, actualParameterList, actualParameterListOpt, declarator, nameOpt, simpleTypeSpecifierOpt,  collectionItemExpressionOpt, nameOpt2;
-non terminal 	propertyCall, literal, literalCollection;
+non terminal    propertyCallParameters, actualParameterList, actualParameterListOpt, declarator, nameOpt, simpleTypeSpecifierOpt,  collectionItemExpressionOpt, nameOpt2;
+non terminal 	propertyCall, propertyOptCall, literal, literalCollection, number, boolean;
 
 
 /* PrecedÃªncias */
@@ -79,7 +83,7 @@ precedence left DOUBLEDOT, DOUBLECOLON, COLON, DOT, ARROW;
 
 /* Contexto */
 oclExpressions ::= constraint:c oclExpressions:oclE
-                   {: RESULT = new OclExpressionClass(contraint,oclE); :} 
+                   {: RESULT = new OclExpressionsClass(c,oclE); :} 
                    | 
                    ;
 
@@ -91,7 +95,7 @@ constraint ::= contextDeclaration:cd stereotype:s NAME:name COLON oclExpression:
                ;
 
 stereotypeOpt ::= stereotype:s stereotypeName:sName COLON oclExpression:oclE stereotypeOpt:sOpt 
-                  {: RESULT = new StereotypeClass(s,sName,oclE,sOpt); :}
+                  {: RESULT = new StereotypeOptClass(s,sName,oclE,sOpt); :}
                   | 
                   ;
 
@@ -107,11 +111,11 @@ contextDeclaration ::= CONTEXT contextDeclarationOpt:cdo
 contextDeclarationOpt ::= operationContext:opCon
 						  {: RESULT = new ContextDeclarationOptClass(opCon); :};  
 
-operationContext ::= NAME:name DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN COLON returnType:rType 
-                     {: RESULT = new OperationContextClass(name,opName,formParList,rType); :}
+operationContext ::= NAME:n DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN COLON returnType:rType 
+                     {: RESULT = new OperationContextClass(n,opName,formParList,rType); :}
 		     		 | 
-                     NAME:name DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN
-		     		 {: RESULT = new OperationContextClass(name,opName,formParList); :}
+                     NAME:n DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN
+		     		 {: RESULT = new OperationContextClass(n,opName,formParList); :}
                      ;
 
 returnType ::= typeSpecifier:typeSpec
@@ -125,8 +129,8 @@ typeSpecifier ::= simpleTypeSpecifier:sTypeSpec
                   {: RESULT = new TypeSpecifierClass(colType); :} 
                   ;
 
-simpleTypeSpecifier ::= pathName:pathName
-                        {: RESULT = new SimpleTypeSpecifierClass(pathName); :} 
+simpleTypeSpecifier ::= pathName:pn
+                        {: RESULT = new SimpleTypeSpecifierClass(pn); :} 
                         ;
 
 pathName ::= NAME:name 
@@ -230,8 +234,8 @@ paramOpt ::= COMMA NAME:name COLON typeSpecifier:typeSpec paramOpt:paramOpt
 logicalExpression ::= relationalExpression:relExp
                       {: RESULT = new LogicalExpressionClass(relExp); :} 
                       |  
-	              	  relationalExpression:relExp logicalOperator:logOp logicalExpression:logExp2
-                      {: RESULT = new LogicalExpressionClass(relExp,logOp,relExp2); :} 
+	              	  relationalExpression:relExp logicalOperator:logOp logicalExpression:logExp
+                      {: RESULT = new LogicalExpressionClass(relExp,logOp,logExp); :} 
                       ;
 
 logicalOperator ::= AND:and 
@@ -248,10 +252,10 @@ logicalOperator ::= AND:and
                     ;
 
 relationalExpression ::= additiveExpression:addExp 
-			 			 {: RESULT = new RelationalExpressionClass(addExp); :}
+			 			 {: RESULT = new RelationalExpressionClass(addExpleft,addExpright, addExp); :}
                          | 
                          additiveExpression:addExp1 relationalOperator:relOp additiveExpression:addExp2 
-			 			 {: RESULT = new RelationalExpressionClass(addExp1,relOp,addExp2); :}
+			 			 {: RESULT = new RelationalExpressionClass(addExp1left,addExp1right,addExp1,relOp,addExp2); :}
                          ;
 
 relationalOperator ::= EQ:eq 
@@ -320,7 +324,7 @@ multiplyOperator ::= TIMES:times
                      ;
 
 postfixExpression ::= primaryExpression:priExp postfixExpressionOpt:postExpOpt
-				      {: RESULT = new PostFixExpressionClass(priExp,postExpOpt); :}
+				      {: RESULT = new PostfixExpressionClass(priExp,postExpOpt); :}
                       ;
 
 postfixExpressionOpt ::= postfixExpressionOpt:postExpOpt operator:op propertyCall:proCall 
@@ -336,19 +340,19 @@ operator ::= DOT:dot
              ;
 
 primaryExpression ::= literalCollection:litCol 
-                      {: RESULT = new PrimaryExpressionClass(litCol); :}
+                      {: RESULT = new PrimaryExpressionClass(litCol,"literalCollectionClass"); :}
                       | 
                       literal:lit 
-                      {: RESULT = new PrimaryExpressionClass(lit); :}
+                      {: RESULT = new PrimaryExpressionClass(lit,"literal"); :}
                       | 
                       propertyCall:propCall 
-                      {: RESULT = new PrimaryExpressionClass(propCall); :}
+                      {: RESULT = new PrimaryExpressionClass(propCall,"propertyCall"); :}
                       | 
                       LPAREN expression:exp RPAREN 
-                      {: RESULT = new PrimaryExpressionClass(exp); :}
+                      {: RESULT = new PrimaryExpressionClass(exp,"expression"); :}
                       | 
                       ifExpression:ifExp
-                      {: RESULT = new PrimaryExpressionClass(ifExp); :}
+                      {: RESULT = new PrimaryExpressionClass(ifExp,"IfExpressionClass"); :}
                       ;
 
 literalCollection ::= collectionKind:colKind LBRACKET collectionItemOpt:colItemOpt RBRACKET
@@ -356,7 +360,7 @@ literalCollection ::= collectionKind:colKind LBRACKET collectionItemOpt:colItemO
                       ;
 
 collectionItemOpt ::= collectionItem:colItem1 collectionItemOptTwo:colItemOpt
-                      {: RESULT = new CollectionItemClass(colItem,colItemOpt); :} 
+                      {: RESULT = new CollectionItemClass(colItem1,colItemOpt); :} 
                       | 
                       ;
 
@@ -374,49 +378,27 @@ collectionItemExpressionOpt ::= DOUBLEDOT expression:exp
                                 |
                                 ;
 
-literal ::= STRING:string
-            {: RESULT = new LiteralClass("string"); :}
+literal ::= STRING:s
+            {: RESULT = new LiteralClass(s, "string"); :}
             | 
-            NUMBER:number 
-            {: RESULT = new LiteralClass("number"); :}
+            number:n
+            {: RESULT = new LiteralClass(n); :}
             |
-            DOUBLE:double
-            {: RESULT = new LiteralClass("double"); :}
+            boolean:b
+            {: RESULT = new LiteralClass(b); :}
             ;
             
 
-propertyCall ::= pathName:pathName timeExpression:timeExp qualifiers:qual propertyCallParameters:propCallParam 
-		 {: RESULT = new PropertyCallClass(pathName,timeExp,qual,propCallParam); :}
-                 | 
-                 pathName:pathName timeExpression:timeExp qualifiers:qual  
-		 {: RESULT = new PropertyCallClass(pathName,timeExp,qual); :}
-                 | 
-                 pathName:pathName timeExpression:timeExp propertyCallParameters:propCallParam 
-		 {: RESULT = new PropertyCallClass(pathName,timeExp,propCallParam); :}
-                 | 
-                 pathName:pathName timeExpression:timeExp 
-		 {: RESULT = new PropertyCallClass(pathName,timeExp); :}
-                 | 
-                 pathName:pathName qualifiers:qual propertyCallParameters:propCallParam 
-		 {: System.out.println("Property Call"); :}
-                 |
-                 pathName:pathName qualifiers:qual
-		 {: RESULT = new PropertyCallClass(pathName,qual); :}
-                 | 
-                 pathName:pathName propertyCallParameters:propCallParam 
-		 {: RESULT = new PropertyCallClass(pathName,propCallParam); :}
-                 |
-                 pathName:pathName
-		 {: RESULT = new PropertyCallClass(pathName); :}
-                 ;
+propertyCall ::= pathName:pn propertyOptCall:poc	
+			 	{: RESULT = new PropertyCallClass(pnleft, pnright, pn, poc); :};
+
+propertyOptCall	::= propertyCallParameters:pcp
+				    {: RESULT = new PropertyOptCallClass(pcp); :}
+					| ;
 
 timeExpression ::= AT PRE
 		   {: RESULT = new TimeExpressionClass(); :}
                    ;
-
-qualifiers ::= LCOL actualParameterList:actualParamList RCOL
-	       	   {: RESULT = new QualifiersClass(actualParamList); :}
-               ;
 
 actualParameterList ::= expression:exp actualParameterListOpt:actualParamListOpt
             	        {: RESULT = new ActualParameterListClass(exp,actualParamListOpt); :}
@@ -427,15 +409,9 @@ actualParameterListOpt ::= COMMA expression:exp actualParameterListOpt:actualPar
                            | 
                            ;
 
-propertyCallParametersClass ::= LPAREN declarator:dec actualParameterList:actualParamList RPAREN 
-                           {: RESULT = new PropertyCallParametersClass(dec,atualParamList); :}
-                           | 
-                           LPAREN actualParameterList:actualParamList RPAREN 
-                           {: RESULT = new PropertyCallParametersClass(atualParamList); :}
+propertyCallParameters ::= LPAREN actualParameterList:apl RPAREN 
+                           {: RESULT = new PropertyCallParametersClass(apl); :}
                            |
-                           LPAREN declarator:dec RPAREN 
-                           {: RESULT = new PropertyCallParametersClass(dec); :}
-                           | 
                            LPAREN RPAREN
                            {: RESULT = new PropertyCallParametersClass(); :}
                            ;
@@ -459,13 +435,13 @@ nameOpt2 ::=  COMMA NAME:name
               | 
               ;
 
-simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier:sTypeSpecOpt 
-                           {: RESULT = new SimpleTypeSpecifierOptClass(sTypeSpecOpt); :}
+simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier:sTypeSpec 
+                           {: RESULT = new SimpleTypeSpecifierOptClass(sTypeSpec); :}
                            | 
                            ;
 
-ifExpression ::= IF expression:exp THEN expression:exp ELSE expression:exp ENDIF
-                 {: RESULT = new IfExpressionClass(exp,exp,exp); :}
+ifExpression ::= IF expression:exp1 THEN expression:exp2 ELSE expression:exp3 ENDIF
+                 {: RESULT = new IfExpressionClass(exp1,exp2,exp3); :}
                  ;
 
 boolean	::= TRUE:t

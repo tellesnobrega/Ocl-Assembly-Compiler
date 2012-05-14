@@ -16,7 +16,7 @@ public class ActualParameterListClass {
 		
 		if (parameterListOpt != null) {
 			parametros.addAll(parameterListOpt.getParametros());
-			this.codigo =  logicalExp.getCodigo()+ ", " + parameterListOpt.getCodigo();
+			this.codigo =  "(" + logicalExp.getCodigo()+ ", " + parameterListOpt.getCodigo();
 		} else {
 			this.codigo = logicalExp.getCodigo() + ")";
 		}

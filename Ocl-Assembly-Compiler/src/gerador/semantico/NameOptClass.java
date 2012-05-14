@@ -1,15 +1,23 @@
 package gerador.semantico;
 
+import java.util.jar.Attributes.Name;
+
 import gerador.parser.Classe;
 
-public class NameOpt2 {
+public class NameOptClass {
 	
 	private String codigo;
 	private Classe tipo;
 	
-	public NameOpt2(Object name) {
-		String n = (String) name;
+	public NameOptClass(Object n, Object nameOpt) {
+		String name = (String) n;
+		NameOptClass nOpt = (NameOptClass) nameOpt;
 	}
+	
+	public NameOptClass(Object name) {
+		NameOpt2Class nameOpt = (NameOpt2Class) name;
+	}
+	
 
 	public String getCodigo() {
 		return codigo;
@@ -26,4 +34,5 @@ public class NameOpt2 {
 	public void setTipo(Classe tipo) {
 		this.tipo = tipo;
 	}
+	
 }

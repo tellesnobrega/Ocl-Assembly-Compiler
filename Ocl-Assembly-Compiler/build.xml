@@ -1,4 +1,4 @@
-<project name="Ocl-Assembly-Compiler" basedir="." default="jar">
+<project name="Ocl-Assembly-Compiler" basedir="." default="run">
 		<path id="classpath">
         	<fileset dir="lib" includes="**/*.jar"/>
 		</path>
@@ -7,7 +7,7 @@
                 <echo>Limpando projeto</echo>
                 <delete dir="bin"/>
                 <delete dir="src/codigoGerado"/>
-                <delete file="OclAssemblyCompiler.jar"/>
+                <delete file="Ocl-Assembly-Compiler.jar"/>
         </target>
         
         <target name="init" depends="limpa" description="cria os diretorios.">
@@ -65,7 +65,7 @@
             <classpath>
                 <path id="application" location="OclAssemblyCompiler.jar"/>
             </classpath>
-        	<arg value="teste.txt"/>
+        	<arg value="teste.ocl"/>
         	<arg value="profe_modificado.xml" />
         </java>
     </target>
