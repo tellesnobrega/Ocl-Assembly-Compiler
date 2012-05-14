@@ -19,13 +19,14 @@ public class PrimaryExpressionClass {
 			this.tipo = ((PropertyCallClass) objeto).getTipo();
 			this.codigo = ((PropertyCallClass) objeto).getCodigo();
 		}
-		if (tipo.equals("logicalExpression")) {
-			this.tipo = ((LogicalExpressionClass) objeto).getTipo();
-			this.codigo = "(" + ((LogicalExpressionClass) objeto).getCodigo() + ")";
+		if (tipo.equals("expression")) {
+			this.tipo = ((ExpressionClass) objeto).getTipo();
+			this.codigo = "(" + ((ExpressionClass) objeto).getCodigo() + ")";
+		}
 		if (tipo.equals("IfExpressionClass")) {
 			this.tipo = ((IfExpressionClass) objeto).getTipo();
 			this.codigo = ((IfExpressionClass) objeto).getCodigo();
-			}
+		}
 	}
 	
 	public Classe getTipo(){
