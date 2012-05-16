@@ -2,27 +2,28 @@ package gerador.semantico;
 
 import gerador.parser.Classe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PropertyOptCallClass {
-	private Classe tipo;
-	private String codigo;
+
+	private List<Classe> parametros = new ArrayList<Classe>();
+
 	
 	public PropertyOptCallClass(Object pcp) {
-		PropertyCallParametersClass property = (PropertyCallParametersClass) pcp;
+		if (pcp != null) {
+			parametros = ((PropertyCallParametersClass) pcp).getParametros();
+		}
 	}
 
-	public Classe getTipo() {
-		return tipo;
+
+	public List<Classe> getParametros() {
+		return parametros;
 	}
 
-	public void setTipo(Classe tipo) {
-		this.tipo = tipo;
+
+	public void setParametros(List<Classe> parametros) {
+		this.parametros = parametros;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
 }

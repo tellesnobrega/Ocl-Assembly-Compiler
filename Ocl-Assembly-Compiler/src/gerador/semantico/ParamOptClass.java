@@ -5,12 +5,17 @@ import gerador.parser.Classe;
 public class ParamOptClass {
 	
 	private Classe tipo;
-	private String codigo;
 	
 	public ParamOptClass(Object n, Object ts, Object po) {
 		String name = (String) n;
 		TypeSpecifierClass typeSpec = (TypeSpecifierClass) ts;
 		ParamOptClass paramOpt = (ParamOptClass) po;
+		
+		if(po == null) {
+			this.tipo = typeSpec.getTipo();
+		}else {
+			this.tipo = paramOpt.getTipo();
+		}
 	}
 
 	public Classe getTipo() {
@@ -19,14 +24,6 @@ public class ParamOptClass {
 
 	public void setTipo(Classe tipo) {
 		this.tipo = tipo;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 	
 }

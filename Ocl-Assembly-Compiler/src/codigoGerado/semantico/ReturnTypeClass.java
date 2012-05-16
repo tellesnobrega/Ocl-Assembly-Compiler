@@ -4,11 +4,11 @@ import gerador.parser.Classe;
 
 public class ReturnTypeClass {
 	
-	private String codigo;
 	private Classe tipo;
 	
 	public ReturnTypeClass(Object ts) {
 		TypeSpecifierClass typeSpec = (TypeSpecifierClass) ts;
+		this.tipo = typeSpec.getTipo();
 	}
 	
 	public Classe getTipo() {
@@ -16,12 +16,6 @@ public class ReturnTypeClass {
 	}
 	public void setTipo(Classe tipo) {
 		this.tipo = tipo;
-	}
-	public String getCodigo() {
-		return codigo;
-	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 }

@@ -1,40 +1,33 @@
 package gerador.semantico;
 
+import gerador.AnalisadorSemantico;
 import gerador.parser.Classe;
 
 public class AdditiveExpressionOptClass {
 	
 	private Classe tipo;
-	private String codigo;
+	private AnalisadorSemantico analisador = AnalisadorSemantico.getInstance();
 	
-	public AdditiveExpressionOptClass(Object addOpt, Object addOp, Object multiExp){
+	
+	public AdditiveExpressionOptClass(int linha, int coluna, Object addOpt, Object addOp, Object multiExp){
 		MultiplicativeExpressionClass multi = (MultiplicativeExpressionClass) multiExp;
 		AdditiveExpressionOptClass optAdd = (AdditiveExpressionOptClass) addOpt;
 		AddOperatorClass addOperator = (AddOperatorClass) addOp;
-		//TODO Consertar
-		if(optAdd == null){
-			this.setTipo(multi.getTipo());
-			this.setCodigo(multi.getCodigo());
+		
+		Classe number = analisador.getGerenciador().getClasse("Number");
+		
+		if (!multi.getTipo().isTypeOf(number) || (optAdd != null && !optAdd
+				.getTipo().isTypeOf(number))) {
+			throw new RuntimeException("tipos nao permitidos para a operacao " + addOperator.getOperador() + analisador.identificaErro(linha, coluna));
 		}
-		else{
-			this.setTipo(this.getTipo());
-			this.setCodigo(multi.getCodigo() + this.getCodigo());
-		}
+		this.tipo = number;
 	}
 
 	public Classe getTipo() {
 		return tipo;
 	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
 	public void setTipo(Classe tipo) {
 		this.tipo = tipo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 }

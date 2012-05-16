@@ -5,27 +5,20 @@ import gerador.parser.Classe;
 public class PrimaryExpressionClass {
 	
 	private Classe tipo;
-	private String codigo;
 	
-	public PrimaryExpressionClass(Object objeto, String tipo){
+	public PrimaryExpressionClass(int linha, int coluna, Object objeto, String tipo) throws Exception{
 		if(tipo.equals("literalCollectionClass")) {
 			this.tipo = ((LiteralCollectionClass) objeto).getTipo();
-		}
-		if (tipo.equals("literal")) {
+		}else if (tipo.equals("literal")) {
 			this.tipo = ((LiteralClass) objeto).getTipo();
-			this.codigo = ((LiteralClass) objeto).getCodigo();
-		}
-		if(tipo.equals("propertyCall")) {
+		}else if(tipo.equals("propertyCall")) {
 			this.tipo = ((PropertyCallClass) objeto).getTipo();
-			this.codigo = ((PropertyCallClass) objeto).getCodigo();
-		}
-		if (tipo.equals("expression")) {
+		}else if (tipo.equals("expression")) {
 			this.tipo = ((ExpressionClass) objeto).getTipo();
-			this.codigo = "(" + ((ExpressionClass) objeto).getCodigo() + ")";
-		}
-		if (tipo.equals("IfExpressionClass")) {
+		}else  if (tipo.equals("IfExpressionClass")) {
 			this.tipo = ((IfExpressionClass) objeto).getTipo();
-			this.codigo = ((IfExpressionClass) objeto).getCodigo();
+		} else {
+			throw new Exception("Tipo nao suportado na linha: " + linha + " e coluna: " + coluna);
 		}
 	}
 	
@@ -33,8 +26,5 @@ public class PrimaryExpressionClass {
 		return this.tipo;
 	}
 	
-	public String getCodigo(){
-		return this.codigo;
-	}
 }
 	

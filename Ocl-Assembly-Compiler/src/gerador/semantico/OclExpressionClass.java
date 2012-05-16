@@ -1,15 +1,24 @@
 package gerador.semantico;
 
+import gerador.AnalisadorSemantico;
+import gerador.parser.Classe;
+
 public class OclExpressionClass {
 
-	String codigo;
+	private Classe tipo;
 	
 	public OclExpressionClass(Object exp) {
 		ExpressionClass expression = (ExpressionClass) exp;
+		this.tipo = expression.getTipo();
 	}
 	
-	public String getCodigo() {
-		return codigo;
+
+	public Classe getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Classe tipo) {
+		this.tipo = tipo;
 	}
 
 }

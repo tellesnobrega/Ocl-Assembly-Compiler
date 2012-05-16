@@ -5,6 +5,7 @@ public class OperatorClass {
 	private String operator;
 	
 	public OperatorClass(Object operador) {
+		this.operator = (String) operador;
 		
 	}
 

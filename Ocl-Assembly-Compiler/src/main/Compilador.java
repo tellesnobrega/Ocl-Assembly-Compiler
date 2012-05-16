@@ -6,6 +6,7 @@ import java.io.IOException;
 import codigoGerado.AnalisadorLexico;
 import codigoGerado.parser;
 
+
 public class Compilador {
 	
 	public static void executaAnalisadorLexico(String exemplo) throws IOException {

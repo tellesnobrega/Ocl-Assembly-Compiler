@@ -3,7 +3,6 @@ package gerador.semantico;
 import gerador.parser.Classe;
 
 public class OperationContextClass {
-	private String codigo;
 	private Classe tipo;
 	
 	public OperationContextClass(Object n, Object on,Object fpl,Object rType) {
@@ -11,6 +10,7 @@ public class OperationContextClass {
 		OperationNameClass opName = (OperationNameClass) on;
 		FormalParameterListClass formParamList = (FormalParameterListClass) fpl;
 		ReturnTypeClass returnType = (ReturnTypeClass) rType;
+		
 		
 	}
 	
@@ -21,13 +21,6 @@ public class OperationContextClass {
 		
 	}
 	
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
 
 	public Classe getTipe() {
 		return tipo;

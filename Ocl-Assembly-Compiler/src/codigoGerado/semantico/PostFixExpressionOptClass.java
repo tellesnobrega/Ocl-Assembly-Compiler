@@ -4,22 +4,22 @@ import gerador.parser.Classe;
 
 public class PostFixExpressionOptClass {
 
-	private String codigo;
 	private Classe tipo;
 	
 	public PostFixExpressionOptClass(Object postExpOpt,Object op,Object proCall) {
 		PostFixExpressionOptClass postExp = (PostFixExpressionOptClass) postExpOpt;
 		OperatorClass operator = (OperatorClass) op;
-		PropertyCallClass propCall = (PropertyCallClass) proCall;
 		
+		if (proCall instanceof PropertyCallClass) {
+			PropertyCallClass propCall = (PropertyCallClass) proCall;
+			if (postExp == null) {
+				this.tipo = propCall.getTipo();
+			} else {
+				this.tipo = postExp.getTipo();
+			}
+		}
 	}
 	
-	public String getCodigo() {
-		return codigo;
-	}
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
 	public Classe getTipo() {
 		return tipo;
 	}

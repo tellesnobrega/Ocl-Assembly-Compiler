@@ -1,13 +1,14 @@
 package gerador.semantico;
 
+import gerador.AnalisadorSemantico;
 import gerador.parser.Classe;
 
 public class CollectionKindClass {
 
 	private Classe tipo;
 	private String valor;
-	private String codigo;
-
+	private AnalisadorSemantico analisador = AnalisadorSemantico.getInstance();
+	
 	public CollectionKindClass(Object colecao) {
 		this.valor = (String) colecao;
 	}
@@ -20,7 +21,4 @@ public class CollectionKindClass {
 		return tipo;
 	}
 	
-	public String getCodigo() {
-		return codigo;
-	}
 }

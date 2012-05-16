@@ -16,9 +16,7 @@ public class ActualParameterListOptClass {
 		
 		if (parameterListOpt != null) {
 			parametros.addAll(parameterListOpt.getParametros());
-			this.codigo =  expression.getCodigo()+ ", " + this.codigo;
 		} else {
-			this.codigo = expression.getCodigo() + ")";
 		}
 	}
 

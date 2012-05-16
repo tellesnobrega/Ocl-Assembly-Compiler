@@ -65,7 +65,7 @@ non terminal	additiveExpression, additiveExpressionOpt, ifExpression, primaryExp
 non terminal 	postfixExpressionOpt, unaryExpression, postfixExpression, timeExpression;
 non terminal 	collectionItemOpt, collectionItem, collectionItemOptTwo;
 non terminal	paramOpt, relationalOperator, addOperator, logicalOperator, operator, multiplyOperator, unaryOperator;
-non terminal    propertyCallParameters, actualParameterList, actualParameterListOpt, declarator, nameOpt, simpleTypeSpecifierOpt,  collectionItemExpressionOpt, nameOpt2;
+non terminal    propertyCallParameters, actualParameterList, actualParameterListOpt, simpleTypeSpecifierOpt,  collectionItemExpressionOpt;
 non terminal 	propertyCall, propertyOptCall, literal, literalCollection, number, boolean;
 
 
@@ -87,7 +87,7 @@ oclExpressions ::= constraint:c oclExpressions:oclE
                    | 
                    ;
 
-constraint ::= contextDeclaration:cd stereotype:s NAME:name COLON oclExpression:oclE stereotypeOpt:sOpt 
+constraint ::= contextDeclaration:cd  stereotype:s NAME:name COLON oclExpression:oclE stereotypeOpt:sOpt 
                {: RESULT = new ConstraintClass(cd,s,name,oclE,sOpt); :}               
 	    	   | 
                contextDeclaration:cd stereotype:s COLON oclExpression:oclE stereotypeOpt:sOpt 
@@ -111,7 +111,7 @@ contextDeclaration ::= CONTEXT contextDeclarationOpt:cdo
 contextDeclarationOpt ::= operationContext:opCon
 						  {: RESULT = new ContextDeclarationOptClass(opCon); :};  
 
-operationContext ::= NAME:n DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN COLON returnType:rType 
+operationContext ::= NAME:n  DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN COLON returnType:rType 
                      {: RESULT = new OperationContextClass(n,opName,formParList,rType); :}
 		     		 | 
                      NAME:n DOUBLECOLON operationName:opName LPAREN formalParameterList:formParList RPAREN
@@ -123,10 +123,10 @@ returnType ::= typeSpecifier:typeSpec
                ;
 
 typeSpecifier ::= simpleTypeSpecifier:sTypeSpec
-                  {: RESULT = new TypeSpecifierClass(sTypeSpec); :} 
+                  {: RESULT = new TypeSpecifierClass(sTypeSpecleft, sTypeSpecright, sTypeSpec); :} 
                   | 
                   collectionType:colType
-                  {: RESULT = new TypeSpecifierClass(colType); :} 
+                  {: RESULT = new TypeSpecifierClass(colTypeleft, colTyperight, colType); :} 
                   ;
 
 simpleTypeSpecifier ::= pathName:pn
@@ -134,10 +134,10 @@ simpleTypeSpecifier ::= pathName:pn
                         ;
 
 pathName ::= NAME:name 
-             {: RESULT = new PathNameClass(name); :} 
+             {: RESULT = new PathNameClass(nameleft, nameright,name); :} 
              | 
-             pathName:pathName DOUBLECOLON NAME:name
-             {: RESULT = new PathNameClass(pathName,name); :}
+             NAME:name DOUBLECOLON:dc pathName:pathName
+             {: RESULT = new PathNameClass(name, dc,pathName); :}
              ;
 
 collectionType ::= collectionKind:colKind LPAREN simpleTypeSpecifier:sTypeSpec RPAREN
@@ -282,7 +282,7 @@ additiveExpression ::= multiplicativeExpression:multExp additiveExpressionOpt:ad
                        ;
 
 additiveExpressionOpt ::= additiveExpressionOpt:addExpOpt addOperator:addOp multiplicativeExpression:multExp 
-                          {: RESULT = new AdditiveExpressionOptClass(addExpOpt,addOp,multExp); :}
+                          {: RESULT = new AdditiveExpressionOptClass(addExpOptleft, addExpOptright, addExpOpt,addOp,multExp); :}
                           | 
                           ;
 
@@ -294,7 +294,7 @@ addOperator ::= PLUS:plus
                 ;
 
 multiplicativeExpression ::= unaryExpression:uExp multiplicativeExpressionOpt:multExpOpt
-			     			 {: RESULT = new MultiplicativeExpressionClass(uExp,multExpOpt); :}
+			     			 {: RESULT = new MultiplicativeExpressionClass(uExpleft, uExpright, uExp,multExpOpt); :}
                              ;
 
 multiplicativeExpressionOpt ::= multiplicativeExpressionOpt:multExpOpt multiplyOperator:multOp unaryExpression:uExp 
@@ -303,7 +303,7 @@ multiplicativeExpressionOpt ::= multiplicativeExpressionOpt:multExpOpt multiplyO
                                 ;
 
 unaryExpression ::= unaryOperator:uOp postfixExpression:postExp 
-                    {: RESULT = new UnaryExpressionClass(uOp,postExp); :}
+                    {: RESULT = new UnaryExpressionClass(uOpleft,uOpright, uOp,postExp); :}
                     | 
                     postfixExpression:postExp 
                     {: RESULT = new UnaryExpressionClass(postExp); :}
@@ -320,14 +320,14 @@ multiplyOperator ::= TIMES:times
 		     		 {: RESULT = new MultiplyOperatorClass("*"); :}
                      | 
                      DIV:div
-		     		 {: RESULT = new MultiplyOperatorClass("*"); :}
+		     		 {: RESULT = new MultiplyOperatorClass("/"); :}
                      ;
 
-postfixExpression ::= primaryExpression:priExp postfixExpressionOpt:postExpOpt
+postfixExpression ::= primaryExpression:priExp {: atual.setContexto(priExpleft, priExpright,priExp); :} postfixExpressionOpt:postExpOpt  
 				      {: RESULT = new PostfixExpressionClass(priExp,postExpOpt); :}
                       ;
 
-postfixExpressionOpt ::= postfixExpressionOpt:postExpOpt operator:op propertyCall:proCall 
+postfixExpressionOpt ::= postfixExpressionOpt:postExpOpt operator:op propertyCall:proCall {: atual.setContexto(proCallleft, proCallright, proCall); :}
 			 			 {: RESULT = new PostFixExpressionOptClass(postExpOpt,op,proCall); :}
                          | 
                          ;
@@ -336,23 +336,23 @@ operator ::= DOT:dot
              {: RESULT = new OperatorClass("dot"); :}
              | 
              ARROW:arrow
-             {: RESULT = new OperatorClass("arrow"); :}
+             {: atual.empilhaFluxo(); RESULT = new OperatorClass("arrow"); :}
              ;
 
 primaryExpression ::= literalCollection:litCol 
-                      {: RESULT = new PrimaryExpressionClass(litCol,"literalCollectionClass"); :}
+                      {: RESULT = new PrimaryExpressionClass(litColleft, litColright, litCol,"literalCollectionClass"); :}
                       | 
                       literal:lit 
-                      {: RESULT = new PrimaryExpressionClass(lit,"literal"); :}
+                      {: RESULT = new PrimaryExpressionClass(litleft,litright,lit,"literal"); :}
                       | 
                       propertyCall:propCall 
-                      {: RESULT = new PrimaryExpressionClass(propCall,"propertyCall"); :}
+                      {: RESULT = new PrimaryExpressionClass(propCallleft, propCallright, propCall,"propertyCall"); :}
                       | 
                       LPAREN expression:exp RPAREN 
-                      {: RESULT = new PrimaryExpressionClass(exp,"expression"); :}
+                      {: RESULT = new PrimaryExpressionClass(expleft,expright, exp,"expression"); :}
                       | 
                       ifExpression:ifExp
-                      {: RESULT = new PrimaryExpressionClass(ifExp,"IfExpressionClass"); :}
+                      {: RESULT = new PrimaryExpressionClass(ifExpleft,ifExpright,ifExp,"IfExpressionClass"); :}
                       ;
 
 literalCollection ::= collectionKind:colKind LBRACKET collectionItemOpt:colItemOpt RBRACKET
@@ -392,8 +392,8 @@ literal ::= STRING:s
 propertyCall ::= pathName:pn propertyOptCall:poc	
 			 	{: RESULT = new PropertyCallClass(pnleft, pnright, pn, poc); :};
 
-propertyOptCall	::= propertyCallParameters:pcp
-				    {: RESULT = new PropertyOptCallClass(pcp); :}
+propertyOptCall	::= {: atual.setContexto(); :} propertyCallParameters:pcp
+				    {: atual.retrocedeContexto();RESULT = new PropertyOptCallClass(pcp); :}
 					| ;
 
 timeExpression ::= AT PRE
@@ -412,28 +412,7 @@ actualParameterListOpt ::= COMMA expression:exp actualParameterListOpt:actualPar
 propertyCallParameters ::= LPAREN actualParameterList:apl RPAREN 
                            {: RESULT = new PropertyCallParametersClass(apl); :}
                            |
-                           LPAREN RPAREN
-                           {: RESULT = new PropertyCallParametersClass(); :}
-                           ;
-
-declarator ::= NAME:name nameOpt:nameOpt simpleTypeSpecifierOpt:sTypeSpecOpt SEMICOLON NAME:name2 COLON typeSpecifier:typeSpec EQ expression:exp PIPE 
-               {: RESULT = new DeclaratorClass(name,nameOpt,sTypeSpecOpt,name2,typeSpec,exp); :}
-               | 
-               NAME:name nameOpt:nameOpt simpleTypeSpecifierOpt:sTypeSpecOpt PIPE 
-               {: RESULT = new DeclaratorClass(name,nameOpt,sTypeSpecOpt); :}
-               ;
-
-nameOpt ::= NAME:name nameOpt:nameOpt 
-            {: RESULT = new NameOptClass(name,nameOpt); :}
-            | 
-            nameOpt2:nameOpt2
-            {: RESULT = new NameOptClass(nameOpt2); :}
-            ;
-
-nameOpt2 ::=  COMMA NAME:name 
-              {: RESULT = new NameOpt2Class(name); :}
-              | 
-              ;
+                           LPAREN RPAREN;
 
 simpleTypeSpecifierOpt ::= COLON simpleTypeSpecifier:sTypeSpec 
                            {: RESULT = new SimpleTypeSpecifierOptClass(sTypeSpec); :}

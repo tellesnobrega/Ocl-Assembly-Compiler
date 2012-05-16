@@ -5,24 +5,19 @@ import gerador.parser.Classe;
 public class TypeSpecifierClass {
 	
 	private Classe tipo;
-	private String codigo;
 	
-	public TypeSpecifierClass(Object obj) {
+	public TypeSpecifierClass(int linha, int coluna, Object obj) throws Exception {
 		
 		if(obj instanceof SimpleTypeSpecifierClass) {
 			SimpleTypeSpecifierClass simpleTypeSpec = (SimpleTypeSpecifierClass) obj;
-		}else {
+			this.tipo = simpleTypeSpec.getTipo();
+		}else if(obj instanceof CollectionTypeClass) {
 			CollectionTypeClass colType = (CollectionTypeClass) obj;
+			this.tipo = colType.getTipo();
+		}else {
+			throw new Exception("Tipo nao suportado para essa classe, na linha: " + linha + " e coluna: " + coluna);
 		}
 		
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 	public Classe getTipo() {
